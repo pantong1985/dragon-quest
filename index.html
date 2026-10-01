@@ -180,6 +180,7 @@ pre{white-space:pre-wrap;word-break:break-word;font:inherit;font-size:18px;backg
   <div class="card" id="tloc">
     <div id="tlocTxt"></div>
     <button id="lpAtTemple" class="lp" data-sub="ใช้เมื่อ GPS ในอาคารไม่ชัด">อยู่ที่วัดแล้ว (ผู้ใหญ่)</button>
+    <button id="tryPeek" class="btn alt">🔭 ลองส่อง (ที่วัด) · ดูอย่างเดียว</button>
   </div>
   <div class="card"><h2>🧺 ตะกร้าทองเมฆ</h2><div id="tbasket"></div></div>
   <div class="card" id="tgold" hidden></div>
@@ -458,7 +459,7 @@ function manualArrive(){const np=nextPoint();if(!np){toast('ครบทุก�
      !confirm('เพิ่งถึงจุดที่ '+last.n+' — ยืนยันว่าถึงจุดที่ '+np.n+' แล้ว?'))return;
   const d=lastFix?distM(lastFix,np):null;checkIn(np.n,'manual',lastFix?lastFix.acc:null,d);}
 /* ป้อนที่จุด: ต้องอยู่ใกล้จุดจริง (GPS) หรือเพิ่งกดถึงแล้วเองไม่เกิน 5 นาที */
-function nearFeedItem(){const day=D(),tk=todayKey(),g=feedFix();let best=null,bd=Infinity;
+function nearFeedItem(){if(P.open&&P.trial)return null;const day=D(),tk=todayKey(),g=feedFix();let best=null,bd=Infinity;
   for(const it of ST.profile.basket){if(it.day!==tk)continue;const p=pt(it.n);if(!p)continue;let ok=false,dd=Infinity;const lim=p.radius+FEED_NEAR_EXTRA_M;
     if(g){dd=distM(g,p);if(dd<=lim&&!clearlyFar(p,lim))ok=true;}
     const m=day.manualAt[it.n];if(m&&Date.now()-m<=FEED_GRACE){ok=true;if(!isFinite(dd))dd=0;}
@@ -698,11 +699,12 @@ function getView(){
   if(ORI.has){ORI.head=lerpAng(ORI.head,ORI.rh,0.22);ORI.pitch+=(ORI.rp-ORI.pitch)*0.22;return {head:ORI.head,pitch:ORI.pitch};}
   return {head:SIM?SIMS.head:0,pitch:SIM?SIMS.pitch:15};}
 function oriSince(t){return (ORI.has&&ORI.at>t)||(SIM&&SIMS.at>t);}
-function openPlay(){if(P.open)return;const day=D();
+function openPlay(trial){if(P.open)return;const day=D();P.trial=!!trial;
+  if(!P.trial){
   if(!day.walk.active){toast('ยังไม่ได้เริ่มภารกิจ');return;}
   if(isWanphra()){toast('วันพระ: เดินเงียบ ไม่มีช่วงส่อง');return;}
   if(!$('#resume').hidden){toast('แตะ "เดินภารกิจต่อ" ก่อน');return;}
-  if(!canPeek()){toast('เปิดส่องได้หลังถึงจุดและมีอาหารรอป้อน');renderWalk();return;}
+  if(!canPeek()){toast('เปิดส่องได้หลังถึงจุดและมีอาหารรอป้อน');renderWalk();return;}}
   Object.assign(P,{open:true,t0:performance.now(),fed:null,fedMsg:'',tmpMsg:'',tmpUntil:0,anim:null,close:null,closeItem:null,sc:null,stream:null,lastUi:0,dragonOff:false,fx:[],
     centered:false,dOff:Math.random()*80-40,fix0:freshFix()});
   // ตั้งเพดาน 30 วินาทีก่อนอย่างอื่น — กล้อง/3D พังก็ยังปิดเองตามเวลา
@@ -713,7 +715,7 @@ function openPlay(){if(P.open)return;const day=D();
   const v=getView();P.h0=v.head;P.h0ok=SIM;   // มือถือจริง: ตั้งทิศเริ่มจากเหตุการณ์เข็มทิศแรกหลังเปิด (ค่าเก่าค้างจากตอนเดินไม่ใช้)
   show('play');$('#s-play').classList.remove('sky');startCam();
   if(getRenderer()){try{buildPlayScene();}catch(e){console.error(e);if(P.sc){try{disposeTree(P.sc);}catch(_){}}P.sc=null;try{if(R.domElement.parentNode)R.domElement.parentNode.removeChild(R.domElement);}catch(_){}}}
-  const quick=!!nearFeedItem();   // อยู่ที่จุดและมีอาหาร = ไม่ต้องส่องหา มังกรมากลางจอทันที
+  const quick=!P.trial&&!!nearFeedItem();   // อยู่ที่จุดและมีอาหาร = ไม่ต้องส่องหา มังกรมากลางจอทันที
   if(quick)dragonToCenter();
   ensureAudio();sparkleSnd();speak(quick?'มังกรมาแล้ว! ป้อนเลย':'ส่องหามังกรบนฟ้า!');
   if(!motOK&&!SIM)toast('ตรวจการเดินไม่ได้ — ผู้ใหญ่ช่วยดูให้ยืนนิ่งตอนส่อง',4500);
@@ -790,7 +792,7 @@ function playUi(v){if(!P.open)return;
   if(P.tmpMsg&&performance.now()<P.tmpUntil)msg=P.tmpMsg;
   else if(P.fed)msg=P.fedMsg;
   else if(it)msg=it.name+'ถือ'+it.food+'มารอแล้ว! แตะ “ป้อน”';
-  else msg=noFeedMsg();
+  else msg=P.trial?'ลองส่องที่วัด · ดูอย่างเดียว ป้อนได้เฉพาะที่จุดภารกิจ':noFeedMsg();
   $('#pmsg').textContent=msg;}
 function playFeed(){if(!P.open||P.fed)return;const it=nearFeedItem();if(!it)return;if(!doFeed(it,'point'))return;
   P.fed=it.n;const egg=!ST.profile.hatched;
@@ -843,6 +845,7 @@ function closePlay(reason){if(!P.open)return;P.open=false;
   const secs=Math.min(30,Math.round((performance.now()-P.t0)/1000));
   D().plays.push({at:isoLocal(),secs,fed:P.fed||null,reason});save();P.fix0=null;
   if(wakeWanted&&!wakeLock&&document.visibilityState==='visible')requestWake();
+  if(P.trial){P.trial=false;enterTemple();return;}
   show('walk');renderWalk();flashWalk(reason==='walk'?'เดินต่อแล้ว — กล้องปิดเอง':'เก็บกล้อง ไปต่อ!');}
 
 /* ================= TEMPLE (รังทองเมฆ) ================= */
@@ -1050,6 +1053,7 @@ function wire(){
   glw.addEventListener('pointerup',e=>{if(pd&&!pd.moved)playTap(e.clientX,e.clientY);pd=null;});
   glw.addEventListener('pointercancel',()=>{pd=null;});
   setupHatch();
+  $('#tryPeek').onclick=()=>{ensureAudio();askSensors();openPlay(true);};
   makeLP($('#lpAtTemple'),()=>{D().templeOkUntil=Date.now()+TEMPLE_OK_MS;save();renderTempleLive();speak('มาถึงรังทองเมฆแล้ว');});
   $('#tbasket').addEventListener('click',e=>{const b=e.target.closest('.fbtn');if(b&&!b.disabled)templeFeed(b.dataset.id);});
   const tv=$('#tview');let td=null;
