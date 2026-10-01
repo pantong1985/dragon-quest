@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<title>มังกรหิวแล้ว! — ภารกิจ 3 จุด</title>
+<style>
+:root{--ink:#f5f1e6;--dim:#8d93a1;--gold:#f2c14e;--card:#121622;--line:#262c3b;--ok:#5fd38d;--warn:#ffb84d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;background:#000;color:var(--ink);font-family:-apple-system,"Sukhumvit Set","Thonburi","Noto Sans Thai",system-ui,sans-serif;font-size:18px;line-height:1.5;-webkit-text-size-adjust:100%}
+body{min-height:100vh;min-height:100dvh;overscroll-behavior:none}
+h1{font-size:30px;line-height:1.25;margin:6px 0 4px}
+h2{font-size:22px;line-height:1.3;margin:0 0 8px}
+p{margin:6px 0}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.scr{display:none;min-height:100vh;min-height:100dvh;padding:calc(env(safe-area-inset-top) + 14px) 16px calc(env(safe-area-inset-bottom) + 24px)}
+.scr.on{display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;margin:10px 0;padding:12px 16px;border-radius:18px;background:#1e2433;font-size:20px;font-weight:700;text-align:center;line-height:1.3}
+.btn:active{transform:translateY(2px)}
+.btn.big{min-height:88px;font-size:30px;color:#2b1200;background:linear-gradient(#ffc85a,#ff8a2e);box-shadow:0 6px 0 #a84a12;margin:18px 0 16px}
+.btn.alt{background:#1b2236;border:2px solid #34405f}
+.btn[disabled]{opacity:.42}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin:12px 0}
+.muted{color:var(--dim)}
+.hero{text-align:center;margin-top:6px}
+.logo{font-size:72px;line-height:1}
+.sub{font-size:20px;color:var(--gold);font-weight:700}
+.today{text-align:center;font-size:20px;margin:8px 0 4px}
+#dayBadges{text-align:center}
+.pill{display:inline-block;padding:6px 14px;border-radius:999px;font-weight:700;margin:4px;font-size:18px}
+.pill.wp{background:#3a2c08;color:#ffd76a;border:1px solid #8a6a1a}
+.pill.rest{background:#14263a;color:#9fd0ff;border:1px solid #2f5d8a}
+.pill.miss{background:#3a1430;color:#ffb3df;border:1px solid #8a2f6d}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{min-height:52px;padding:10px 14px;border-radius:16px;background:#1a1f2d;border:2px solid #2e3650;font-size:18px;font-weight:600}
+.chip.on{background:#123521;border-color:var(--ok)}
+.chip.on::before{content:"✓ ";color:var(--ok)}
+.safety{background:#2b1a06;border-color:#6b4512;font-weight:700;font-size:19px}
+.rest{text-align:center;font-size:24px;font-weight:700;background:#0f1d2e;border-color:#25486b}
+.lp{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:64px;margin:10px 0;padding:10px 14px;border-radius:16px;background:#141824;border:1px solid #2a3042;font-size:19px;font-weight:600;text-align:left;line-height:1.3;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:pan-y}
+.lp svg{width:40px;height:40px;flex:none;transform:rotate(-90deg)}
+.lp circle{fill:none;stroke-width:5}
+.lp .rb{stroke:#2c3140}
+.lp .rf{stroke:var(--gold);stroke-dasharray:113.1;stroke-dashoffset:113.1;transition:stroke-dashoffset .15s}
+.lp.hold .rf{transition:stroke-dashoffset var(--hold,1.5s) linear;stroke-dashoffset:0}
+.lp.done{border-color:var(--gold)}
+.lp small{display:block;font-size:18px;color:var(--dim);font-weight:400;margin-top:2px}
+.lp.given{background:#2a230e;border-color:#9a7a26}
+/* walk */
+#s-walk{background:#000;color:#6c6c6c;min-height:100vh;min-height:100svh}
+#wcoarse{color:#a0703a}
+#envWarn{background:#3a1010;border-color:#a33;color:#ffd0d0;font-weight:700;font-size:20px}
+#s-walk.on{display:flex;flex-direction:column}
+#wtitle{font-size:18px;color:#4f4f4f}
+#wstat{font-size:18px;line-height:1.75;color:#6e6e6e;margin-top:8px}
+#wstat b{color:#8a8a8a;font-weight:600}
+#wwarn{color:#a0703a;font-size:18px;margin-top:10px}
+#wflash{font-size:24px;color:#a08a50;min-height:40px;text-align:center;margin:16px 0}
+#resume{background:#101010;border:1px solid #333;color:#9a9a9a;min-height:90px;font-size:22px}
+#wctl{margin-top:auto}
+#s-walk .lp{background:#050505;border-color:#191919;color:#7a7a7a}
+#s-walk .lp small{color:#4c4c4c}
+#s-walk .lp .rb{stroke:#1b1b1b}
+#s-walk .lp .rf{stroke:#8c7a46}
+/* play */
+#s-play{position:fixed;inset:0;padding:0;min-height:0;background:#000;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
+#s-play.sky{background:linear-gradient(#3f9fe8 0%,#9bd3ff 55%,#e4f5ff 100%)}
+#cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+#s-play.sky #cam{display:none}
+#glw{position:absolute;inset:0}
+#glw canvas,#tview canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ptx{position:absolute;left:0;right:0;text-align:center;color:#fff;text-shadow:0 2px 4px #000,0 0 10px rgba(0,0,0,.9);pointer-events:none}
+#pcomp{position:absolute;top:calc(env(safe-area-inset-top) + 8px);left:50%;width:50px;height:50px;margin-left:-25px;border-radius:50%;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.65);pointer-events:none}
+#pneedle{position:absolute;inset:0}
+#pneedle b{position:absolute;top:2px;left:0;right:0;text-align:center;color:#ff5a5a;font-size:18px;line-height:1}
+#pneedle i{position:absolute;left:50%;top:22px;width:4px;height:16px;margin-left:-2px;background:#ff5a5a;border-radius:2px}
+#pnote{top:calc(env(safe-area-inset-top) + 62px);font-size:18px;opacity:.85}
+#pgps{top:calc(env(safe-area-inset-top) + 92px);font-size:22px;color:#ffe08a;font-weight:700}
+#parrow{position:absolute;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;font-size:52px;line-height:64px;text-align:center;color:#ffd54f;text-shadow:0 0 12px #ffb300,0 0 26px #ff8f00;display:none;pointer-events:none}
+#pmsg{bottom:calc(env(safe-area-inset-bottom) + 178px);padding:0 14px;font-size:22px;font-weight:700}
+#pbar{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 12px)}
+#pfeed{margin:0 0 10px}
+#phide{background:rgba(16,18,28,.78);border:1px solid rgba(255,255,255,.25);min-height:56px;margin:0}
+/* temple */
+#s-temple{background:#0b0f1c}
+#tview{position:relative;height:42vh;min-height:260px;border-radius:22px;overflow:hidden;background:linear-gradient(#5db7f5,#bfe5ff 62%,#fff3d6);touch-action:pan-y}
+#tview.gold{background:linear-gradient(#ffc548,#ffe7a0 62%,#fff6dc)}
+#tview .emo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px}
+#tflash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .7s}
+#tcap{position:absolute;left:10px;right:10px;bottom:10px;text-align:center;font-size:22px;font-weight:800;color:#3a2200;text-shadow:0 1px 0 #fff,0 0 8px #fff;pointer-events:none}
+.tname{text-align:center;margin-top:10px}
+#tstage{text-align:center;color:var(--gold);font-weight:700;font-size:20px}
+.fbtn{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;margin:8px 0;padding:10px 14px;border-radius:16px;background:#20304a;border:2px solid #3a5a8a;font-size:20px;font-weight:700;text-align:left}
+.fbtn[disabled]{opacity:.45}
+.fbtn .em{font-size:30px}
+.sleepy{text-align:center;font-size:22px;font-weight:700;color:#bcd6ff}
+.sws{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.sw{width:58px;height:58px;border-radius:50%;border:4px solid rgba(255,255,255,.15)}
+.sw.on{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+input[type=text]{width:100%;font:inherit;font-size:22px;padding:12px 14px;border-radius:14px;border:2px solid #3b4670;background:#0d1120;color:#fff}
+#mapcv{width:100%;display:block;border-radius:14px;margin-top:6px}
+.note{font-size:18px;color:var(--dim)}
+/* summary / settings */
+pre{white-space:pre-wrap;word-break:break-word;font:inherit;font-size:18px;background:#0d1120;border:1px solid #232a40;padding:12px;border-radius:12px;margin:8px 0;-webkit-user-select:text;user-select:text}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #1f2535}
+.row:last-child{border-bottom:0}
+.srow{padding:8px 0;border-bottom:1px solid #1f2535}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 12px);transform:translateX(-50%);width:max-content;max-width:92vw;padding:12px 18px;border-radius:16px;background:rgba(28,32,46,.96);border:1px solid #3b4670;font-size:18px;z-index:80;text-align:center;display:none}
+#sim{position:fixed;right:8px;bottom:8px;z-index:90;width:236px;background:rgba(8,8,8,.93);border:1px solid #555;border-radius:12px;padding:8px;font-size:14px;line-height:1.35;color:#ddd}
+#sim button{background:#2a2f3c;border:1px solid #555;border-radius:8px;padding:6px 8px;margin:2px;font-size:14px;color:#fff}
+#sim input{width:100%}
+@media (prefers-reduced-motion: reduce){.btn:active{transform:none}#tflash{transition:opacity .2s}}
+</style>
+</head>
+<body>
+
+<!-- ============ START ============ -->
+<section id="s-start" class="scr">
+  <div class="hero"><div class="logo">🐉</div><h1>มังกรหิวแล้ว!</h1><div class="sub">ภารกิจ 3 จุด · ทองเมฆพาเดิน</div></div>
+  <div id="today" class="today"></div>
+  <div id="dayBadges"></div>
+  <div id="envWarn" class="card" hidden>⚠ เปิดลิงก์ https นี้ในแท็บ Safari โดยตรง<br><span style="font-size:18px;font-weight:400">ไม่ใช่ในไลน์หรือหน้าต่างซ้อน — ไม่งั้น GPS กล้อง เข็มทิศ และกันจอดับ จะใช้ไม่ได้</span></div>
+  <button id="wpToggle" class="lp" data-sub="ผู้ใหญ่กดค้างเพื่อเปลี่ยน">วันพระ</button>
+  <div class="card"><h2>เช็คก่อนออกเดิน</h2><div class="chips" id="chips"></div>
+    <button id="voiceTest" class="btn alt">🔊 ทดสอบเสียงทองเมฆ</button></div>
+  <div class="card safety">🚸 ข้ามถนน: หยุด–จับมือผู้ใหญ่–มองขวา ซ้าย ขวา</div>
+  <div id="restBox" class="card rest" hidden>😴 วันนี้มังกรพักผ่อน<br><span class="muted" style="font-size:18px;font-weight:400">ไม่ต้องเดิน ไม่เสียอะไรเลย มังกรนอนรอที่รังทองเมฆ</span></div>
+  <button id="startBtn" class="btn big">เริ่มภารกิจ</button>
+  <button id="startAnyway" class="lp" data-sub="วันพักผ่อน — ผู้ใหญ่กดค้าง ถ้าจะเดินจริง" hidden>เริ่มภารกิจอยู่ดี (ผู้ใหญ่)</button>
+  <button id="toTemple" class="btn alt">🐟 รังทองเมฆ (ที่วัด)</button>
+  <button id="toSummary" class="btn alt" hidden>📋 สรุปวันนี้</button>
+  <button id="toSettings" class="lp" data-sub="ผู้ใหญ่เท่านั้น">⚙️ ตั้งค่า (ผู้ใหญ่)</button>
+</section>
+
+<!-- ============ WALK ============ -->
+<section id="s-walk" class="scr">
+  <div id="wtitle">ภารกิจกำลังเดิน · ตาดูถนน ไม่ดูจอ</div>
+  <div id="wstat"></div>
+  <div id="wwarn" hidden>⚠ จออาจดับเอง: ปิดโหมดประหยัดพลังงาน และตั้ง ล็อกอัตโนมัติ: ไม่ใช้</div>
+  <div id="wflash"></div>
+  <button id="resume" class="btn" hidden>แตะ 1 ครั้ง เพื่อเดินภารกิจต่อ</button>
+  <div id="wctl">
+    <button id="lpArrive" class="lp" data-sub="กดค้าง เมื่อถึงจุดถัดไป">ถึงแล้ว (ผู้ใหญ่)</button>
+    <button id="lpPeek" class="lp" data-sub="ผู้ใหญ่ · ไม่เกิน 30 วินาที">ถ่ายบาตรแล้ว — เปิดส่อง</button>
+    <button id="lpEnd" class="lp" data-sub="ไปหน้าสรุป">จบภารกิจ</button>
+  </div>
+</section>
+
+<!-- ============ PLAY ============ -->
+<section id="s-play" class="scr">
+  <video id="cam" playsinline muted autoplay></video>
+  <div id="glw"></div>
+  <div id="pcomp"><div id="pneedle"><b>N</b><i></i></div></div>
+  <div id="pnote" class="ptx">ทิศโดยประมาณจากเข็มทิศ</div>
+  <div id="pgps" class="ptx"></div>
+  <div id="parrow">➤</div>
+  <div id="pmsg" class="ptx"></div>
+  <div id="pbar"><button id="pori" class="btn" hidden>🧭 แตะเพื่อเปิดเข็มทิศ</button><button id="pfeed" class="btn big" style="display:none">ป้อน</button><button id="phide" class="btn">ซ่อน</button></div>
+</section>
+
+<!-- ============ TEMPLE ============ -->
+<section id="s-temple" class="scr">
+  <div id="tview"><div class="emo" hidden>🐉</div><div id="tflash"></div><div id="tcap"></div></div>
+  <h1 id="tname" class="tname"></h1>
+  <div id="tstage"></div>
+  <div class="card" id="thatch">
+    <h2>🥚 ไข่มังกรรออยู่!</h2>
+    <button id="hstart" class="btn big">ฟักไข่</button>
+    <div id="hform" hidden>
+      <p>ตั้งชื่อมังกร แล้วเลือกสี 1 สี</p>
+      <input id="hname" type="text" maxlength="14" placeholder="ชื่อมังกร" autocomplete="off">
+      <div id="hcolors" class="sws"></div>
+      <button id="hgo" class="btn big">ฟักเลย!</button>
+    </div>
+  </div>
+  <div class="card" id="tloc">
+    <div id="tlocTxt"></div>
+    <button id="lpAtTemple" class="lp" data-sub="ใช้เมื่อ GPS ในอาคารไม่ชัด">อยู่ที่วัดแล้ว (ผู้ใหญ่)</button>
+  </div>
+  <div class="card"><h2>🧺 ตะกร้าทองเมฆ</h2><div id="tbasket"></div></div>
+  <div class="card" id="tgold" hidden></div>
+  <div class="card"><h2>ตราคุณธรรม (ผู้ใหญ่กดค้างให้)</h2><div id="tbadges"></div>
+    <p class="note">ตราแต่ละดวงเป็นของแต่งตัวมังกร · แลกเป็นเวลาเล่นเกมไม่ได้</p></div>
+  <div class="card"><h2>🗺️ แผนที่นักสำรวจ</h2><canvas id="mapcv"></canvas>
+    <p class="note">ระยะเป็นเส้นตรงโดยประมาณ · จุดที่ยังไม่เคยไปมีหมอกบัง</p></div>
+  <button id="tsum" class="btn alt">📋 สรุปวันนี้</button>
+  <button id="thome" class="btn alt">กลับหน้าแรก</button>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section id="s-summary" class="scr">
+  <h1>📋 สรุปภารกิจวันนี้</h1>
+  <div id="sumDate" class="muted"></div>
+  <div class="card" id="sumBody"></div>
+  <h2>ข้อความส่งไลน์ผู้ปกครอง</h2>
+  <pre id="sumText"></pre>
+  <button id="copyText" class="btn">คัดลอกข้อความ</button>
+  <button id="copyJson" class="btn alt">คัดลอกข้อมูลดิบ (JSON)</button>
+  <button id="sumTemple" class="btn alt">🐟 ไปรังทองเมฆ</button>
+  <button id="sumHome" class="btn alt">กลับหน้าแรก</button>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section id="s-settings" class="scr">
+  <h1>⚙️ ตั้งค่า (ผู้ใหญ่)</h1>
+  <div class="card"><b>ตำแหน่งตอนนี้</b><div id="setFix" class="muted">รอสัญญาณ GPS…</div></div>
+  <div class="card"><h2>ปักจุดตรงนี้</h2><p class="note">ยืนตรงจุดจริง รอให้ความแม่นต่ำกว่า ±20 ม. แล้วกดปุ่มของจุดนั้น</p><div id="setPts"></div></div>
+  <button id="setLink" class="btn alt">คัดลอกลิงก์ตั้งค่า (#cfg)</button>
+  <button id="setReset" class="btn alt">ลบจุดที่ปักไว้ (กลับค่าเริ่มต้น)</button>
+  <button id="lpWipe" class="lp" data-sub="ลบมังกร ตะกร้า และบันทึกทุกวันในเครื่องนี้">ล้างข้อมูลเกมทั้งหมด (กดค้าง)</button>
+  <p class="note">ทดสอบบนคอม: เติม ?sim=1 ท้ายลิงก์ · ข้อมูลทั้งหมดอยู่ในเครื่องนี้เท่านั้น ไม่ส่งออกไปไหน</p>
+  <button id="setBack" class="btn">กลับ</button>
+</section>
+
+<div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+'use strict';
+/* =====================================================================
+   CONFIG — แก้ได้ (ค่าที่ปักในเครื่อง / ลิงก์ #cfg จะทับค่าพิกัดตรงนี้)
+   ===================================================================== */
+const POINTS = [
+  {n:1, lat:0, lon:0, radius:35, friend:{name:'ปู่เต่าเทอร์โบ', animal:'เต่า', food:'ผักบุ้ง', teach:'เดินเต่า ช้าแต่ถึงแน่', color:'#3fa34d'}},
+  {n:2, lat:0, lon:0, radius:35, friend:{name:'ไก่ดีเจขันเช้า', animal:'ไก่', food:'ข้าวโพดคั่ว', teach:'ยืดแขนปลุกตัว', color:'#f2c94c'}},
+  {n:3, lat:0, lon:0, radius:35, friend:{name:'ช้างจุ๊ดจิ๊ด', animal:'ช้าง', food:'กล้วย', teach:'จิบน้ำ 3 อึก', color:'#9aa5b1'}}
+];
+const TEMPLE = {lat:0, lon:0, name:'วัด', radius:150};
+const FEED_NEAR_EXTRA_M = 15;          // ป้อนได้เมื่อระยะ <= radius + ค่านี้
+const FEED_GRACE = 5*60*1000;           // กดถึงแล้วเอง = นับว่าอยู่ใกล้จุดนั้น 5 นาที
+const ACC_MAX = 50;                     // ไม่ใช้ค่า GPS ที่คลาดเกิน 50 ม.
+const GOOD_FIX_MAX_AGE = 120000;        // ค่า GPS ล่าสุด (ถ้าแม่น) ใช้ได้ไม่เกิน 2 นาที
+const OLD_GOOD_FIX_MS = 20000;          // ถ้าค่าล่าสุดไม่แม่น ใช้ค่าแม่นก่อนหน้าได้ไม่เกิน 20 วินาที (ใช้ป้อนที่จุด)
+const PLAY_CAP_MS = 30000;              // ช่วงส่อง 30 วินาที ต่อไม่ได้
+const AFTER_FEED_MS = 7000;             // ป้อนแล้ว: ดูเพื่อนจุดถัดไปอีกนิด แล้วปิดเอง (ปลาทองขอ: ป้อนต้องไม่นาน)
+const TEMPLE_OK_MS = 20*60*1000;        // ผู้ใหญ่กด "อยู่ที่วัดแล้ว" มีผล 20 นาที (GPS บอกว่าไกลวัดชัด ๆ = ยกเลิก)
+const WANPHRA_DATES = ['2026-10-04','2026-10-11','2026-10-19'];
+const NO_WALK_DATES = ['2026-10-19'];
+const FINAL_DATE = '2026-10-20';
+
+/* ===================================================================== */
+const STAGE_NAMES=['ไข่','ลูกมังกรบินเซ','มังกรเด็กเรอฟองสบู่','มังกรวัยซนตีลังกา','มังกรผู้พิทักษ์ซอย'];
+const COLORS=[{hex:'#e0503c',name:'แดงไฟ'},{hex:'#33b36b',name:'เขียวใบไม้'},{hex:'#3a8fe0',name:'ฟ้าทะเล'},{hex:'#8e5bd6',name:'ม่วงดาว'},{hex:'#e8b730',name:'ทองคำ'}];
+const BADGES=[{id:'turtle',icon:'🐢',name:'เดินเต่า'},{id:'calm',icon:'🙏',name:'ยืนสำรวม'},{id:'help',icon:'🎒',name:'ช่วยลุงตู้'},{id:'care',icon:'💧',name:'ดูแลตัวเอง (หมวก+น้ำ)'},{id:'brave',icon:'🗣️',name:'กล้าบอกตอนเหนื่อยหรือร้อน'}];
+const CHECKS=[{id:'hat',t:'หมวก 🧢'},{id:'water',t:'น้ำ 💧'},{id:'switch',t:'สวิตช์ข้างเครื่องเปิดเสียง 🔔'},{id:'voice',t:'ได้ยินเสียงทองเมฆไหม 🐟'}];
+const ANIMAL_EMOJI={'เต่า':'🐢','ไก่':'🐔','ช้าง':'🐘'};
+const TH_DAYS=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const CFONT='"Sukhumvit Set","Thonburi","Noto Sans Thai","Leelawadee UI",Tahoma,sans-serif';
+const SIM=/[?&]sim=1(&|$)/.test(location.search);
+const HAS3D=typeof THREE!=='undefined';
+const RM=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}})();
+const LS_STATE='mangkornhiw3_state_v1', LS_CFG='mangkornhiw3_cfg_v1';
+
+/* ---------- utils ---------- */
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const toRad=d=>d*Math.PI/180, toDeg=r=>r*180/Math.PI;
+const isNum=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(+x);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function lerpAng(a,b,k){const d=((b-a+540)%360)-180;return (a+d*k+360)%360;}
+function todayKey(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function keyToDate(k){const a=k.split('-').map(Number);return new Date(a[0],a[1]-1,a[2]);}
+function thaiDate(d){return 'วัน'+TH_DAYS[d.getDay()]+'ที่ '+d.getDate()+' '+TH_MONTHS[d.getMonth()]+' '+(d.getFullYear()+543);}
+function isoLocal(d){d=d||new Date();const off=-d.getTimezoneOffset(),s=off>=0?'+':'-',a=Math.abs(off);
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())+s+pad(Math.floor(a/60))+':'+pad(a%60);}
+function hm(iso){const d=new Date(iso);return isNaN(d)?'–':pad(d.getHours())+':'+pad(d.getMinutes());}
+function distM(a,b){const R=6371000,dLat=toRad(b.lat-a.lat),dLon=toRad(b.lon-a.lon);
+  const s=Math.sin(dLat/2)**2+Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.min(1,Math.sqrt(s)));}
+function bearingDeg(a,b){const p1=toRad(a.lat),p2=toRad(b.lat),dl=toRad(b.lon-a.lon);
+  const y=Math.sin(dl)*Math.cos(p2),x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);return (toDeg(Math.atan2(y,x))+360)%360;}
+function fmtDist(m){if(m==null||!isFinite(m))return '–';const r=Math.round(m/10)*10;if(r<1000)return Math.max(10,r)+' ม.';return (m/1000).toFixed(1)+' กม.';}
+function sayDist(m){if(m==null||!isFinite(m))return '';const r=Math.round(m/10)*10;if(r<1000)return Math.max(10,r)+' เมตร';return (m/1000).toFixed(1)+' กิโลเมตร';}
+
+/* ---------- storage (try/catch ทุกครั้ง) ---------- */
+function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
+function lsDel(k){try{localStorage.removeItem(k);}catch(e){}}
+
+/* ---------- state ---------- */
+function freshDay(){return {checklist:{},wanphraManual:null,walk:{active:false,start:null,end:null},checkins:[],fed:{point:[],temple:[]},plays:[],badges:[],goldScale:false,templeOkUntil:0,manualAt:{}};}
+function loadState(){let s=lsGet(LS_STATE);if(!s||s.v!==1)s={v:1,profile:null,days:{}};
+  s.profile=Object.assign({hatched:false,name:'',color:COLORS[0].hex,meals:0,stage:0,lastStageUpDay:null,badgeCounts:{},goldScales:0,everVisited:[],basket:[]},s.profile||{});
+  const pr=s.profile;if(!Array.isArray(pr.basket))pr.basket=[];if(!Array.isArray(pr.everVisited))pr.everVisited=[];
+  if(!pr.badgeCounts||typeof pr.badgeCounts!=='object')pr.badgeCounts={};if(!isNum(pr.meals))pr.meals=0;if(!isNum(pr.stage))pr.stage=0;
+  if(!s.days||typeof s.days!=='object')s.days={};return s;}
+let ST=loadState();
+function save(){const ks=Object.keys(ST.days).sort();while(ks.length>45)delete ST.days[ks.shift()];lsSet(LS_STATE,ST);}
+/* เติมช่องที่ขาดของบันทึกวัน (แก้ในที่เดิม ไม่สร้างวัตถุใหม่ ให้ตัวอ้างอิงเดิมยังใช้ได้) */
+const NORMED=new WeakSet();
+function normDay(d){const f=freshDay();for(const k of Object.keys(f))if(!(k in d))d[k]=f[k];
+  d.walk=Object.assign({active:false,start:null,end:null},(d.walk&&typeof d.walk==='object')?d.walk:{});
+  d.fed=Object.assign({point:[],temple:[]},(d.fed&&typeof d.fed==='object')?d.fed:{});if(!Array.isArray(d.fed.point))d.fed.point=[];if(!Array.isArray(d.fed.temple))d.fed.temple=[];
+  ['checkins','plays','badges'].forEach(x=>{if(!Array.isArray(d[x]))d[x]=[];});
+  ['manualAt','checklist'].forEach(x=>{if(!d[x]||typeof d[x]!=='object')d[x]={};});
+  if(!isNum(d.templeOkUntil))d.templeOkUntil=0;return d;}
+function D(){const k=todayKey();let d=ST.days[k];if(!d||typeof d!=='object')d=ST.days[k]=freshDay();
+  if(!NORMED.has(d)){normDay(d);NORMED.add(d);}return d;}
+function isWanphra(k){k=k||todayKey();const d=ST.days[k];if(d&&d.wanphraManual!=null)return !!d.wanphraManual;return WANPHRA_DATES.includes(k);}
+function isNoWalk(k){return NO_WALK_DATES.includes(k||todayKey());}
+
+/* ---------- config overrides (#cfg + ปักเอง) ---------- */
+let toastLater='';
+function b64urlEnc(str){return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function b64urlDec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(escape(atob(s)));}
+function readHashCfg(){const m=/[#&]cfg=([A-Za-z0-9_\-]+)/.exec(location.hash||'');if(!m)return;
+  try{const o=JSON.parse(b64urlDec(m[1]));if(o&&(Array.isArray(o.points)||o.temple)){lsSet(LS_CFG,{points:Array.isArray(o.points)?o.points:[],temple:o.temple||null,src:'hash',at:isoLocal()});toastLater='รับค่าจุดจากลิงก์แล้ว';}}
+  catch(e){toastLater='อ่านลิงก์ตั้งค่าไม่ได้';}
+  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}}
+function buildCfg(){const ov=lsGet(LS_CFG)||{};const ovp=Array.isArray(ov.points)?ov.points:[];
+  const points=POINTS.map(p=>{const r={n:p.n,lat:p.lat,lon:p.lon,radius:p.radius,friend:Object.assign({},p.friend),src:'default',acc:null};
+    const o=ovp.find(q=>q&&Number(q.n)===p.n);
+    if(o){if(isNum(o.lat)&&isNum(o.lon)){r.lat=+o.lat;r.lon=+o.lon;r.src=o.src||ov.src||'local';}
+      if(isNum(o.radius)&&+o.radius>0)r.radius=+o.radius;if(o.friend&&typeof o.friend==='object')Object.assign(r.friend,o.friend);if(isNum(o.acc))r.acc=+o.acc;}
+    return r;});
+  const t=Object.assign({},TEMPLE,{src:'default',acc:null});const ot=ov.temple;
+  if(ot&&isNum(ot.lat)&&isNum(ot.lon)){t.lat=+ot.lat;t.lon=+ot.lon;t.src=ot.src||ov.src||'local';if(isNum(ot.radius)&&+ot.radius>0)t.radius=+ot.radius;if(ot.name)t.name=String(ot.name);if(isNum(ot.acc))t.acc=+ot.acc;}
+  return {points,temple:t};}
+let CFG={points:[],temple:TEMPLE};
+function pts(){return CFG.points.slice().sort((a,b)=>a.n-b.n);}
+function pt(n){return CFG.points.find(p=>p.n===n)||null;}
+
+/* ---------- audio + speech ---------- */
+let actx=null,thVoice=null;
+function ensureAudio(){try{if(!actx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)actx=new AC();}if(actx&&actx.state!=='running')actx.resume();}catch(e){}}
+function tone(f,st,dur,type,vol){if(!actx)return;try{const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime+st;o.type=type||'sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||0.1,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+dur+0.05);}catch(e){}}
+function chime(){ensureAudio();tone(880,0,0.7,'sine',0.09);tone(1318.5,0.13,0.9,'sine',0.07);}
+function chompSnd(){ensureAudio();[0,0.17,0.34].forEach(s=>{tone(170,s,0.09,'square',0.05);tone(110,s+0.03,0.08,'triangle',0.08);});tone(660,0.6,0.25,'sine',0.07);tone(990,0.74,0.4,'sine',0.06);}
+function sparkleSnd(){ensureAudio();[784,988,1175,1568].forEach((f,i)=>tone(f,i*0.11,0.5,'sine',0.06));}
+function pickVoice(){try{const vs=speechSynthesis.getVoices()||[];const th=vs.filter(v=>/^th([-_]|$)/i.test(v.lang||''));
+  thVoice=th.find(v=>/kanya/i.test(v.name))||th.find(v=>v.localService)||th[0]||null;}catch(e){}}
+if('speechSynthesis' in window){pickVoice();try{speechSynthesis.addEventListener('voiceschanged',pickVoice);}catch(e){speechSynthesis.onvoiceschanged=pickVoice;}}
+function speak(text,queue){if(!('speechSynthesis' in window)||!text)return;try{const u=new SpeechSynthesisUtterance(text);u.lang='th-TH';if(thVoice)u.voice=thVoice;u.rate=0.95;u.pitch=1.1;u.volume=1;
+  if(!queue&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+document.addEventListener('touchend',ensureAudioIfUsed,{passive:true});
+document.addEventListener('pointerdown',ensureAudioIfUsed,{passive:true});
+function ensureAudioIfUsed(){if(actx&&actx.state!=='running')ensureAudio();}
+
+/* ---------- wake lock ---------- */
+let wakeLock=null,wakeWanted=false,wakeFailed=false,wakePending=false;
+/* quiet = ขอไม่ได้ก็ไม่ขึ้นคำเตือน (ใช้ตอนโหลดหน้าใหม่ — แตะ "เดินภารกิจต่อ" จะขอซ้ำแบบมีคำเตือน) */
+function requestWake(quiet){wakeWanted=true;
+  const fail=()=>{wakePending=false;if(!quiet){wakeFailed=true;updateWakeWarn();}};
+  if(!('wakeLock' in navigator)){fail();return;}
+  if(wakeLock||wakePending)return;
+  wakePending=true;
+  try{navigator.wakeLock.request('screen').then(l=>{wakePending=false;
+      if(!wakeWanted){l.release().catch(()=>{});return;}
+      wakeLock=l;wakeFailed=false;updateWakeWarn();
+      l.addEventListener('release',()=>{if(wakeLock===l)wakeLock=null;
+        if(wakeWanted&&document.visibilityState==='visible')setTimeout(()=>{if(wakeWanted&&!wakeLock)requestWake();},500);});})
+    .catch(fail);}catch(e){fail();}}
+function releaseWake(){wakeWanted=false;const l=wakeLock;wakeLock=null;try{if(l)l.release().catch(()=>{});}catch(e){}}
+function updateWakeWarn(){const w=$('#wwarn');if(w)w.hidden=!wakeFailed;if(wakeFailed&&cur==='walk')toast('⚠ กันจอดับไม่ได้: ปิดโหมดประหยัดพลังงาน และตั้ง ล็อกอัตโนมัติ: ไม่ใช้',6000);}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'){if(wakeWanted&&!wakeLock)requestWake();}
+  else if(P.open)closePlay('hidden');});
+
+/* ---------- orientation + motion ---------- */
+const NEED_ORI_PERM=(()=>{try{return !!(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function');}catch(e){return false;}})();
+const NEED_MOT_PERM=(()=>{try{return !!(window.DeviceMotionEvent&&typeof DeviceMotionEvent.requestPermission==='function');}catch(e){return false;}})();
+const IS_IOS=(()=>{try{return ('webkitCompassHeading' in DeviceOrientationEvent.prototype)||/iP(hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);}catch(e){return false;}})();
+const ORI={has:false,head:0,pitch:15,rh:0,rp:15,at:0,absSeen:false,ios:IS_IOS,cacc:null};
+let oriOK=!NEED_ORI_PERM,motOK=!NEED_MOT_PERM;   // ได้สิทธิ์แล้ว (iOS ต้องขอจากการแตะ)
+let oriOn=false,motOn=false;                     // ฟังเซนเซอร์อยู่ — เฉพาะตอนเปิดช่วงส่อง (ประหยัดแบต)
+function screenAngle(){try{if(screen.orientation&&typeof screen.orientation.angle==='number')return screen.orientation.angle;}catch(e){}return ((Number(window.orientation)||0)+360)%360;}
+function onOri(e,abs){let h=null;
+  if(typeof e.webkitCompassHeading==='number'&&isFinite(e.webkitCompassHeading)&&e.webkitCompassHeading>=0){   // iOS: 0 = เหนือ ตามเข็มนาฬิกา
+    h=e.webkitCompassHeading;ORI.ios=true;ORI.cacc=isNum(e.webkitCompassAccuracy)?+e.webkitCompassAccuracy:null;}
+  else if(ORI.ios)return;                        // iOS: alpha ไม่ได้อ้างทิศเหนือ — ไม่ใช้
+  else if(e.alpha!=null){if(!abs&&ORI.absSeen)return;h=(360-e.alpha)%360;}
+  if(h==null)return;
+  const b=e.beta||0,g=e.gamma||0,ang=screenAngle();let p;
+  if(ang===90)p=Math.abs(b)>90?90-g:-g-90;
+  else if(ang===270)p=Math.abs(b)>90?90+g:g-90;
+  else p=b-90;                                   // แนวตั้ง: beta 90 = ตั้งตรง มองขอบฟ้า
+  p=clamp(p,-89,89);
+  if(!ORI.has){ORI.head=h;ORI.pitch=p;}
+  ORI.rh=h;ORI.rp=p;ORI.has=true;ORI.at=performance.now();}
+function onOriRel(e){onOri(e,false);}
+function onOriAbs(e){ORI.absSeen=true;onOri(e,true);}
+function attachOri(){if(oriOn||!oriOK)return;oriOn=true;window.addEventListener('deviceorientation',onOriRel);
+  if('ondeviceorientationabsolute' in window)window.addEventListener('deviceorientationabsolute',onOriAbs);}
+function detachOri(){if(!oriOn)return;oriOn=false;window.removeEventListener('deviceorientation',onOriRel);window.removeEventListener('deviceorientationabsolute',onOriAbs);}
+/* ขอสิทธิ์เข็มทิศ + การเคลื่อนไหว — ต้องเรียกในจังหวะแตะ (click) เท่านั้น · เริ่มทั้งสอง promise ทันที */
+function askSensors(){let pO=null,pM=null;
+  try{if(NEED_ORI_PERM)pO=DeviceOrientationEvent.requestPermission();}catch(e){}
+  try{if(NEED_MOT_PERM)pM=DeviceMotionEvent.requestPermission();}catch(e){}
+  if(pO)pO.then(r=>{oriOK=r==='granted';if(oriOK&&P.open)attachOri();}).catch(()=>{});
+  if(pM)pM.then(r=>{motOK=r==='granted';if(motOK&&P.open)attachMotion();}).catch(()=>{});}
+let mbuf=[];
+function onMotion(e){if(!P.open)return;const now=performance.now();let m=null;const a=e.acceleration;
+  const rr=e.rotationRate;if(rr&&Math.hypot(rr.alpha||0,rr.beta||0,rr.gamma||0)>90)return;   // กำลังหมุนตัวส่องรอบ ๆ ไม่ใช่เดิน
+  if(a&&a.x!=null)m=Math.hypot(a.x,a.y||0,a.z||0);
+  else{const g=e.accelerationIncludingGravity;if(!g||g.x==null)return;m=Math.abs(Math.hypot(g.x,g.y||0,g.z||0)-9.81);}
+  mbuf.push([now,m]);while(mbuf.length&&now-mbuf[0][0]>2200)mbuf.shift();
+  if(now-P.t0<1000||mbuf.length<10||now-mbuf[0][0]<1800)return;
+  let peaks=0,armed=true,sum=0;for(const s of mbuf){sum+=s[1];if(armed&&s[1]>1.6){peaks++;armed=false;}else if(!armed&&s[1]<0.7)armed=true;}
+  if(peaks>=3&&sum/mbuf.length>0.55)closePlay('walk');}
+function attachMotion(){if(motOn||!motOK)return;motOn=true;window.addEventListener('devicemotion',onMotion);}
+function detachMotion(){if(!motOn)return;motOn=false;window.removeEventListener('devicemotion',onMotion);}
+function sensorsOn(){ORI.has=false;ORI.at=0;attachOri();attachMotion();}   // ค่าทิศเก่าไม่ใช้ — เหตุการณ์แรกเป็นตัวตั้งต้น
+function sensorsOff(){detachOri();detachMotion();}
+
+/* ---------- geolocation ---------- */
+let geoWatch=null,lastFix=null,lastGoodFix=null,geoErr=null,gpsStreak={n:0,c:0};
+function startGeo(){if(SIM){simStart();return;}
+  if(geoWatch!=null||!navigator.geolocation)return;
+  try{geoWatch=navigator.geolocation.watchPosition(p=>onPos(p.coords.latitude,p.coords.longitude,p.coords.accuracy),
+    err=>{geoErr=err;if(err&&err.code===1){try{navigator.geolocation.clearWatch(geoWatch);}catch(e){}geoWatch=null;}refreshLive();},
+    {enableHighAccuracy:true,maximumAge:0,timeout:20000});}catch(e){}}
+function geoErrText(){if(!geoErr)return 'รอสัญญาณ GPS…';if(geoErr.code===1)return 'ไม่ได้อนุญาตตำแหน่ง (ตั้งค่า › Safari › ตำแหน่ง)';if(geoErr.code===3)return 'GPS ช้า กำลังลองใหม่…';return 'ยังหาตำแหน่งไม่ได้';}
+/* ตัวรับตำแหน่งตัวเดียว — ทั้ง GPS จริงและ SIM ส่งเข้าที่นี่ */
+let coarseN=0;   // นับค่าที่คลาดระดับร้อยเมตรติดกัน (ปิด "ตำแหน่งที่แม่นยำ" ไว้)
+const COARSE_MSG='ตำแหน่งไม่แม่น: ตั้งค่า › ความเป็นส่วนตัวและความปลอดภัย › บริการหาตำแหน่ง › เว็บไซต์ Safari › เปิด ตำแหน่งที่แม่นยำ';
+function onPos(lat,lon,acc){const fix={lat:+lat,lon:+lon,acc:isNum(acc)?+acc:999,t:Date.now()};
+  lastFix=fix;geoErr=null;coarseN=fix.acc>=500?coarseN+1:0;
+  if(fix.acc<=ACC_MAX){lastGoodFix=fix;if(D().walk.active)gpsCheck(fix);
+    // สำรองการตรวจเดิน: ช่วงส่องเปิดอยู่แล้วตำแหน่งขยับเกินค่าคลาด = ปิดกล้อง
+    if(P.open){if(!P.fix0)P.fix0=fix;else if(distM(fix,P.fix0)>Math.max(15,(fix.acc+P.fix0.acc)*0.6))closePlay('walk');}}
+  refreshLive();}
+function goodFix(){return lastGoodFix&&Date.now()-lastGoodFix.t<=GOOD_FIX_MAX_AGE?lastGoodFix:null;}
+/* ค่าที่ใช้ตัดสินการป้อนที่จุด: ค่าล่าสุดถ้าแม่น · ถ้าค่าล่าสุดไม่แม่น ใช้ค่าแม่นก่อนหน้าได้แค่ 20 วินาที */
+function feedFix(){const now=Date.now();
+  if(lastFix&&lastFix.acc<=ACC_MAX)return now-lastFix.t<=GOOD_FIX_MAX_AGE?lastFix:null;
+  return lastGoodFix&&now-lastGoodFix.t<=OLD_GOOD_FIX_MS?lastGoodFix:null;}
+/* ค่าล่าสุด (แม้ไม่แม่น) บอกชัดว่าไกลเกิน lim แม้หักค่าคลาดแล้ว */
+function clearlyFar(p,lim){return !!(lastFix&&lastFix.acc>ACC_MAX&&distM(lastFix,p)-lastFix.acc>lim);}
+function freshFix(){return lastFix&&lastFix.acc<=ACC_MAX&&Date.now()-lastFix.t<=15000?lastFix:null;}
+function gpsCheck(fix){const np=nextPoint();if(!np){gpsStreak={n:0,c:0};return;}
+  if(gpsStreak.n!==np.n)gpsStreak={n:np.n,c:0};
+  const d=distM(fix,np);
+  if(d<=np.radius){gpsStreak.c++;if(gpsStreak.c>=2){gpsStreak={n:0,c:0};checkIn(np.n,'auto',fix.acc,d);}}
+  else gpsStreak.c=0;}
+
+/* ---------- game logic ---------- */
+function nextPoint(){const day=D();return pts().find(p=>!day.checkins.some(c=>c.n===p.n))||null;}
+function checkIn(n,method,acc,d){const day=D();
+  if(day.checkins.some(c=>c.n===n))return false;
+  const np=nextPoint();if(!np||np.n!==n)return false;
+  const p=pt(n),tk=todayKey();
+  day.checkins.push({n,time:isoLocal(),method,accuracy:isNum(acc)?Math.round(acc):null,distance:isNum(d)?Math.round(d):null});
+  if(method==='manual')day.manualAt[n]=Date.now();
+  if(!ST.profile.basket.some(b=>b.id===tk+'#'+n))ST.profile.basket.push({id:tk+'#'+n,n,day:tk,name:p.friend.name,animal:p.friend.animal,food:p.friend.food,teach:p.friend.teach,color:p.friend.color});
+  if(!ST.profile.everVisited.includes(n))ST.profile.everVisited.push(n);
+  save();
+  if(!isWanphra()){chime();setTimeout(()=>speak('ถึงจุดที่ '+n+' แล้ว! '+p.friend.name+'เตรียม'+p.friend.food+'ไว้ให้มังกรแล้ว',true),350);}
+  flashWalk('จุด '+n+' ✓');refreshLive();return true;}
+function manualArrive(){const np=nextPoint();if(!np){toast('ครบทุกจุดแล้ว');return;}
+  const day=D(),last=day.checkins[day.checkins.length-1],g=feedFix();
+  if(last&&Date.now()-new Date(last.time).getTime()<120000&&g&&distM(g,np)>np.radius+FEED_NEAR_EXTRA_M&&
+     !confirm('เพิ่งถึงจุดที่ '+last.n+' — ยืนยันว่าถึงจุดที่ '+np.n+' แล้ว?'))return;
+  const d=lastFix?distM(lastFix,np):null;checkIn(np.n,'manual',lastFix?lastFix.acc:null,d);}
+/* ป้อนที่จุด: ต้องอยู่ใกล้จุดจริง (GPS) หรือเพิ่งกดถึงแล้วเองไม่เกิน 5 นาที */
+function nearFeedItem(){const day=D(),tk=todayKey(),g=feedFix();let best=null,bd=Infinity;
+  for(const it of ST.profile.basket){if(it.day!==tk)continue;const p=pt(it.n);if(!p)continue;let ok=false,dd=Infinity;const lim=p.radius+FEED_NEAR_EXTRA_M;
+    if(g){dd=distM(g,p);if(dd<=lim&&!clearlyFar(p,lim))ok=true;}
+    const m=day.manualAt[it.n];if(m&&Date.now()-m<=FEED_GRACE){ok=true;if(!isFinite(dd))dd=0;}
+    if(ok&&dd<bd){best=it;bd=dd;}}
+  return best;}
+function nearestPending(){const tk=todayKey();let best=null;
+  for(const it of ST.profile.basket){if(it.day!==tk)continue;const p=pt(it.n);if(!p)continue;const dd=lastFix?distM(lastFix,p):null;
+    if(!best||(dd!=null&&(best.d==null||dd<best.d)))best={it,d:dd};}
+  return best;}
+function doFeed(item,where){const i=ST.profile.basket.findIndex(b=>b.id===item.id);if(i<0)return false;
+  ST.profile.basket.splice(i,1);ST.profile.meals++;D().fed[where].push({n:item.n,food:item.food,from:item.day,time:isoLocal()});save();return true;}
+function templeDist(){return lastFix?distM(lastFix,CFG.temple):null;}
+/* อยู่ที่วัด: GPS ในรัศมีวัด และใกล้วัดกว่าใกล้จุดภารกิจ (จุด 1 ห่างวัดแค่ ~137 ม.) · หรือผู้ใหญ่กดค้าง (ยกเลิกเองถ้า GPS บอกว่าไกลวัดชัด ๆ) */
+function atTemple(){const t=CFG.temple,g=goodFix();
+  if(D().templeOkUntil>Date.now()&&!(g&&distM(g,t)>t.radius+200)&&!clearlyFar(t,t.radius+200))return true;
+  if(!g||clearlyFar(t,t.radius))return false;
+  const dt=distM(g,t);return dt<=t.radius&&CFG.points.every(p=>dt<=distM(g,p));}
+function stageFor(m){return m>=18?4:m>=10?3:m>=4?2:1;}
+function checkGrowth(){const pr=ST.profile,k=todayKey();if(!pr.hatched)return false;
+  if(k>=FINAL_DATE&&pr.stage<4){pr.stage=4;pr.lastStageUpDay=k;save();return true;}
+  if(stageFor(pr.meals)>pr.stage&&pr.lastStageUpDay!==k){pr.stage++;pr.lastStageUpDay=k;save();return true;}
+  return false;}
+function decoList(){const pr=ST.profile;return {badges:BADGES.filter(b=>(pr.badgeCounts[b.id]||0)>0).map(b=>b.id),gold:pr.goldScales||0};}
+
+/* ---------- UI helpers ---------- */
+let cur='start',toastT=null;
+function toast(msg,ms){const t=$('#toast');t.textContent=msg;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>{t.style.display='none';},ms||2800);}
+function lpInner(label,sub){return '<svg viewBox="0 0 44 44"><circle class="rb" cx="22" cy="22" r="18"/><circle class="rf" cx="22" cy="22" r="18"/></svg><span>'+label+(sub?'<small>'+sub+'</small>':'')+'</span>';}
+/* ปุ่มผู้ใหญ่: กดค้างจนวงเต็ม · ขยับนิ้วเกิน 12 px / ออกนอกปุ่ม / เลื่อนจอ = ยกเลิกเงียบ ๆ (ไม่บอกวิธีใช้ ให้เด็กเห็น) */
+function makeLP(el,fn,holdMs){holdMs=holdMs||1500;if(!el.querySelector('svg'))el.innerHTML=lpInner(esc(el.textContent.trim()),esc(el.dataset.sub||''));
+  el.style.setProperty('--hold',(holdMs/1000)+'s');
+  let tm=null,armed=false,sx=0,sy=0;
+  const stop=()=>{if(!armed)return;armed=false;clearTimeout(tm);el.classList.remove('hold');};
+  el._lpCancel=stop;
+  el.addEventListener('pointerdown',e=>{if(e.button>0)return;e.preventDefault();clearTimeout(tm);el.classList.remove('done');void el.offsetWidth;el.classList.add('hold');armed=true;sx=e.clientX;sy=e.clientY;
+    try{el.setPointerCapture(e.pointerId);}catch(_){}
+    tm=setTimeout(()=>{if(!armed)return;armed=false;el.classList.remove('hold');el.classList.add('done');setTimeout(()=>el.classList.remove('done'),700);try{fn();}catch(err){console.error(err);}},holdMs);});
+  el.addEventListener('pointermove',e=>{if(!armed)return;if(Math.hypot(e.clientX-sx,e.clientY-sy)>12){stop();return;}
+    const r=el.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)stop();});
+  el.addEventListener('pointerup',stop);el.addEventListener('pointercancel',stop);el.addEventListener('lostpointercapture',stop);
+  el.addEventListener('contextmenu',e=>e.preventDefault());el.addEventListener('click',e=>e.preventDefault());}
+/* เปลี่ยนข้อความปุ่มกดค้าง (เฉพาะเมื่อเปลี่ยนจริง) — ยกเลิกการกดค้างที่ค้างอยู่ กันกดโดนจุดถัดไป */
+function setLP(el,label,sub){const k=label+'|'+(sub||'');if(el.dataset.lbl===k)return;el.dataset.lbl=k;if(el._lpCancel)el._lpCancel();el.innerHTML=lpInner(esc(label),esc(sub||''));}
+function show(id){if(cur==='temple'&&id!=='temple')stopTemple3D();
+  document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+id));cur=id;try{window.scrollTo(0,0);}catch(e){}}
+function refreshLive(){if(cur==='walk')renderWalk();if(P.open)updateFar();if(cur==='temple')renderTempleLive();if(cur==='settings')renderSettingsLive();}
+
+/* ================= START ================= */
+function renderStart(){const k=todayKey(),day=D(),now=new Date(),nw=isNoWalk(k),wp=isWanphra(k);
+  $('#today').textContent=thaiDate(now);
+  let b='';if(wp)b+='<span class="pill wp">🙏 วันนี้วันพระ · เดินเงียบ</span>';if(nw)b+='<span class="pill rest">😴 วันนี้มังกรพักผ่อน</span>';
+  const y=new Date(now);y.setDate(y.getDate()-1);if(isNoWalk(todayKey(y))&&!nw)b+='<span class="pill miss">💛 มังกรคิดถึง!</span>';
+  $('#dayBadges').innerHTML=b;
+  setLP($('#wpToggle'),'วันพระ: '+(day.wanphraManual==null?'อัตโนมัติ ('+(WANPHRA_DATES.includes(k)?'ใช่':'ไม่ใช่')+')':(day.wanphraManual?'ใช่ (ตั้งเอง)':'ไม่ใช่ (ตั้งเอง)')),'ผู้ใหญ่กดค้างเพื่อเปลี่ยน');
+  const ch=$('#chips');ch.innerHTML='';CHECKS.forEach(c=>{const el=document.createElement('button');el.className='chip'+(day.checklist[c.id]?' on':'');el.textContent=c.t;
+    el.onclick=()=>{day.checklist[c.id]=!day.checklist[c.id];save();el.classList.toggle('on',!!day.checklist[c.id]);};ch.appendChild(el);});
+  $('#restBox').hidden=!nw;$('#startBtn').hidden=nw&&!day.walk.active&&!restArmed;$('#startAnyway').hidden=!nw||day.walk.active||restArmed;
+  $('#startBtn').textContent=day.walk.active?'เดินภารกิจต่อ':(day.checkins.length?'เริ่มภารกิจ (เดินต่อจากจุดเดิม)':'เริ่มภารกิจ');
+  $('#toSummary').hidden=!(day.checkins.length||day.walk.start||day.fed.temple.length);}
+/* แตะเดียว — ทำตามลำดับภายในจังหวะแตะ (ต้องเรียกจาก click เท่านั้น ห้ามเรียกจาก timer ของปุ่มกดค้าง) */
+let restArmed=false;   // วันพักผ่อน: ผู้ใหญ่กดค้างแล้ว → โชว์ปุ่ม "เริ่มภารกิจ" ให้แตะจริง
+function startGesture(isResume){
+  // 1) สิทธิ์เข็มทิศ + การเคลื่อนไหว (เริ่มทั้งสอง promise ทันที · ฟังเซนเซอร์จริงเฉพาะตอนเปิดช่วงส่อง)
+  askSensors();
+  // 2) เสียง + พูดไทย 1 ประโยค
+  ensureAudio();pickVoice();speak(isResume?'เดินภารกิจต่อ เดินเต่าไปด้วยกันนะ':'ทองเมฆพร้อมแล้ว! เดินเต่าไปด้วยกันนะ');
+  // 3) กันจอดับ
+  requestWake();
+  // 4) GPS
+  startGeo();
+  // 5) ขอสิทธิ์กล้องหลังไว้ก่อน แล้วปิดทันที
+  try{if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})
+    .then(s=>s.getTracks().forEach(t=>t.stop())).catch(()=>{});}catch(e){}}
+function beginWalk(){startGesture(false);const day=D();if(!day.walk.start)day.walk.start=isoLocal();day.walk.active=true;day.walk.end=null;save();
+  $('#resume').hidden=true;show('walk');renderWalk();}
+
+/* ================= WALK ================= */
+let flashT=null;
+function flashWalk(msg){const f=$('#wflash');if(!f)return;f.textContent=msg;clearTimeout(flashT);flashT=setTimeout(()=>{f.textContent='';},5000);}
+function renderWalk(){if(cur!=='walk')return;const day=D(),np=nextPoint(),wp=isWanphra(),N=CFG.points.length;let h='';
+  if(wp)h+='<div>🙏 วันพระ · เดินเงียบ (ไม่มีช่วงส่อง)</div>';
+  if(SIM)h+='<div>[SIM]</div>';
+  h+='<div>'+(np?'จุดถัดไป <b>'+np.n+'/'+N+'</b>':'ครบ <b>'+N+'/'+N+'</b> จุดแล้ว')+'</div>';
+  if(lastFix){h+='<div>'+(np?'ระยะถึงจุดถัดไป <b>~'+fmtDist(distM(lastFix,np))+'</b>':'ระยะถึงวัด <b>~'+fmtDist(templeDist())+'</b>')+'</div>';
+    h+='<div>ความแม่น GPS <b>±'+Math.round(lastFix.acc)+' ม.</b>'+(lastFix.acc>ACC_MAX?' (ยังไม่นับ)':'')+'</div>';
+    if(coarseN>=2)h+='<div id="wcoarse">'+COARSE_MSG+'</div>';}
+  else h+='<div>'+geoErrText()+'</div>';
+  h+='<div>อาหารรอป้อน <b>'+ST.profile.basket.length+'</b></div>';
+  if(day.checkins.length)h+='<div>'+day.checkins.map(c=>'จุด '+c.n+' ✓ '+hm(c.time)+' '+(c.method==='auto'?'GPS':'มือ')).join(' · ')+'</div>';
+  const peek=canPeek();if(!wp&&!peek&&day.walk.active)h+='<div>ช่วงส่องเปิดได้เมื่อถึงจุดและมีอาหารรอป้อน</div>';
+  $('#wstat').innerHTML=h;$('#lpPeek').hidden=!peek;$('#wwarn').hidden=!wakeFailed;
+  setLP($('#lpArrive'),np?'ถึงจุดที่ '+np.n+' แล้ว (ผู้ใหญ่)':'ครบทุกจุดแล้ว',np?'กดค้าง เมื่อถึงจุดที่ '+np.n:'');
+  // โหลดหน้าใหม่กลางทาง: ซ่อนปุ่มผู้ใหญ่จนกว่าจะแตะ "เดินภารกิจต่อ" (ขอสิทธิ์/เสียง/กันจอดับ ในจังหวะแตะจริง)
+  $('#wctl').hidden=!$('#resume').hidden;}
+/* ช่วงส่อง: หลังถึงจุดและมีอาหารของวันนี้รอป้อน · ไม่เกิน 1 ครั้งต่อ 1 จุดที่ถึง · วันพระไม่มี */
+function canPeek(){const day=D();if(!day.walk.active||isWanphra())return false;const tk=todayKey();
+  return ST.profile.basket.some(b=>b.day===tk)&&day.plays.length<day.checkins.length;}
+function endWalk(){const day=D();day.walk.active=false;day.walk.end=isoLocal();save();releaseWake();renderSummary();show('summary');}
+
+/* ================= 3D helpers ================= */
+let R=null;
+function getRenderer(){if(!HAS3D)return null;if(R)return R;
+  try{R=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});R.setPixelRatio(Math.min(2,window.devicePixelRatio||1));R.setClearColor(0x000000,0);}catch(e){R=null;}
+  return R;}
+function sizeTo(el,cam){if(!R||!el)return;const w=el.clientWidth||innerWidth,h=el.clientHeight||innerHeight;R.setSize(w,h,false);if(cam){cam.aspect=w/h;cam.updateProjectionMatrix();}}
+function M(c,o){return new THREE.MeshLambertMaterial(Object.assign({color:c},o||{}));}
+function B(par,w,h,d,m,x,y,z){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),(m&&m.isMaterial)?m:M(m));mesh.position.set(x||0,y||0,z||0);par.add(mesh);return mesh;}
+function G(par,x,y,z){const g=new THREE.Group();g.position.set(x||0,y||0,z||0);if(par)par.add(g);return g;}
+function shade(c,k){return new THREE.Color(c).multiplyScalar(k);}
+function tint(c,k){return new THREE.Color(c).lerp(new THREE.Color(0xffffff),k);}
+function disposeTree(o){if(!o)return;o.traverse(x=>{if(x.geometry)x.geometry.dispose();if(x.material){(Array.isArray(x.material)?x.material:[x.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});}
+function dirVec(b,e,r){const bb=toRad(b),ee=toRad(e);return new THREE.Vector3(r*Math.cos(ee)*Math.sin(bb),r*Math.sin(ee),-r*Math.cos(ee)*Math.cos(bb));}
+function glowTex(){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');const gr=g.createRadialGradient(64,64,0,64,64,64);
+  gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(0.35,'rgba(255,255,255,.45)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);}
+function glowSprite(color,size){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex(),color,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));s.scale.set(size,size,1);return s;}
+function rrect(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.lineTo(x+w-r,y);g.quadraticCurveTo(x+w,y,x+w,y+r);g.lineTo(x+w,y+h-r);g.quadraticCurveTo(x+w,y+h,x+w-r,y+h);g.lineTo(x+r,y+h);g.quadraticCurveTo(x,y+h,x,y+h-r);g.lineTo(x,y+r);g.quadraticCurveTo(x,y,x+r,y);g.closePath();}
+function makeLabel(){const s=new THREE.Sprite(new THREE.SpriteMaterial({transparent:true,depthWrite:false}));s.userData.aspect=4;s.renderOrder=5;return s;}
+function setLabel(s,text,hl){const fs=54,h=88,c=document.createElement('canvas'),g=c.getContext('2d');g.font='bold '+fs+'px '+CFONT;
+  const w=Math.ceil(g.measureText(text).width)+56;c.width=w;c.height=h;g.font='bold '+fs+'px '+CFONT;
+  rrect(g,3,3,w-6,h-6,30);g.fillStyle=hl?'rgba(255,160,30,.9)':'rgba(0,0,0,.62)';g.fill();g.lineWidth=4;g.strokeStyle=hl?'#fff3c4':'rgba(255,255,255,.55)';g.stroke();
+  g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.fillText(text,w/2,h/2+3);
+  const old=s.material.map;const t=new THREE.CanvasTexture(c);t.minFilter=THREE.LinearFilter;t.generateMipmaps=false;s.material.map=t;s.material.needsUpdate=true;if(old)old.dispose();s.userData.aspect=w/h;}
+function setOpacity(o,a){o.traverse(x=>{if(x.isMesh&&x.material){x.material.transparent=a<1;x.material.opacity=a;}});}
+
+/* ---------- blocky models ---------- */
+function buildDragon(hex,stage,deco){const root=new THREE.Group(),body=G(root);const ud={stage,body,wings:[],tail:[],jaw:null,head:null,bubbles:[],baseSize:2.6};root.userData=ud;
+  deco=deco||{badges:[],gold:0};const gold=M(0xf7c948,{emissive:new THREE.Color(0x553300),emissiveIntensity:0.4});
+  if(stage===0){const egg=G(body),cr=M(0xf6e7c1),sp=M(0xe8a930);ud.egg=egg;ud.baseSize=1.9;
+    B(egg,1.3,1.5,1.3,cr);B(egg,1.0,0.35,1.0,cr,0,0.88,0);B(egg,1.0,0.3,1.0,cr,0,-0.86,0);B(egg,1.5,0.9,1.05,cr);B(egg,1.05,0.9,1.5,cr);
+    B(egg,0.36,0.36,0.06,sp,0.25,0.3,0.78);B(egg,0.26,0.26,0.06,sp,-0.35,-0.2,0.78);B(egg,0.06,0.3,0.3,sp,0.78,0.1,0.2);B(egg,0.06,0.26,0.26,sp,-0.78,-0.3,-0.1);B(egg,0.3,0.3,0.06,sp,-0.1,0.45,-0.78);
+    [-1,1].forEach(s=>{const w=G(body,s*0.75,0.2,0);B(w,0.7,0.06,0.45,M(0xffffff),s*0.35,0,0);w.userData.side=s;ud.wings.push(w);});
+    return root;}
+  const c=new THREE.Color(hex),cm=M(c),dk=M(shade(hex,0.62)),lt=M(tint(hex,0.5)),horn=M(0xfff1c4),wh=M(0xffffff),bk=M(0x111111);
+  B(body,1.3,1.1,1.8,cm);B(body,0.95,0.5,1.6,lt,0,-0.38,0.05);
+  for(let i=0;i<4;i++)B(body,0.2,0.28,0.26,lt,0,0.66,0.62-i*0.45);
+  [[-0.45,0.55],[0.45,0.55],[-0.45,-0.55],[0.45,-0.55]].forEach(a=>{B(body,0.32,0.5,0.36,dk,a[0],-0.72,a[1]);B(body,0.36,0.12,0.46,horn,a[0],-0.98,a[1]+0.06);});
+  B(body,0.65,0.75,0.6,cm,0,0.55,0.95);
+  const head=G(body,0,1.05,1.25);ud.head=head;head.scale.setScalar(stage===1?1.25:1);
+  B(head,1.0,0.85,0.95,cm);B(head,0.72,0.42,0.62,cm,0,-0.1,0.72);
+  B(head,0.12,0.1,0.06,bk,-0.18,0,1.04);B(head,0.12,0.1,0.06,bk,0.18,0,1.04);
+  const jaw=G(head,0,-0.3,0.3);B(jaw,0.66,0.16,0.72,lt,0,0,0.38);ud.jaw=jaw;
+  [-1,1].forEach(s=>{B(head,0.3,0.32,0.08,wh,s*0.28,0.18,0.48);B(head,0.14,0.18,0.06,bk,s*0.27,0.15,0.53);B(head,0.06,0.06,0.04,wh,s*0.23,0.21,0.565);});
+  const hl=[0,0.25,0.38,0.55,0.7][stage];
+  [-1,1].forEach(s=>{const h=B(head,0.16,hl,0.16,horn,s*0.3,0.42+hl/2,-0.2);h.rotation.x=-0.45;});
+  const ws=[0,0.6,0.8,1.0,1.25][stage];
+  [-1,1].forEach(s=>{const w=G(body,s*0.6,0.45,0.1),inn=G(w);inn.scale.setScalar(ws);
+    B(inn,1.5,0.1,0.18,dk,s*0.75,0.05,0.4);B(inn,1.4,0.06,0.9,lt,s*0.75,0,-0.05);B(inn,1.0,0.08,0.14,dk,s*1.9,0.05,0.3);B(inn,0.9,0.05,0.6,lt,s*1.85,0,-0.05);
+    w.userData.side=s;ud.wings.push(w);});
+  let prev=G(body,0,0,-0.9),sz=0.75;const nSeg=[0,4,5,6,6][stage];
+  for(let i=0;i<nSeg;i++){const seg=G(prev,0,0,i===0?0:-0.5);B(seg,sz,sz*0.85,0.62,i%2?dk:cm,0,0,-0.25);
+    if(i<Math.min(deco.gold,nSeg))B(seg,sz*0.45,0.07,0.32,gold,0,sz*0.43,-0.25);
+    ud.tail.push(seg);prev=seg;sz*=0.8;}
+  const tip=B(prev,0.5,0.12,0.5,lt,0,0,-0.7);tip.rotation.y=Math.PI/4;
+  if(stage===2){const bm=M(0xbfe9ff,{transparent:true,opacity:0.55});for(let i=0;i<3;i++){const b=B(head,0.22,0.22,0.22,bm,0,0,1.0);ud.bubbles.push(b);}}
+  if(stage===4){B(head,0.86,0.16,0.72,gold,0,0.5,-0.02);[-0.3,0,0.3].forEach(x=>B(head,0.14,0.28,0.14,gold,x,0.7,-0.02));B(body,0.9,0.7,0.1,gold,0,0.05,0.93);}
+  const has=id=>deco.badges.includes(id);
+  if(has('turtle')){const sh=M(0x2e8b57);B(body,0.95,0.16,1.0,sh,0,0.62,-0.15);B(body,0.4,0.06,0.4,M(0x6fcf97),0,0.72,-0.15);}
+  if(has('calm')){B(body,0.72,0.1,0.1,gold,0,0.28,0.93);B(body,0.22,0.24,0.2,gold,0,0.1,1.0);}
+  if(has('help')){B(body,0.75,0.6,0.32,M(0x8b5a2b),0,0.3,-0.68);B(body,0.5,0.2,0.06,M(0xc8954f),0,0.3,-0.86);}
+  if(has('care')){const bl=M(0x2f80ed);B(head,1.02,0.18,0.98,bl,0,0.5,-0.02);B(head,0.7,0.06,0.42,bl,0,0.43,0.62);B(body,0.2,0.28,0.06,M(0x8fd3ff),0.35,0.1,0.93);}
+  if(has('brave')){const rd=M(0xe63946);B(body,0.82,0.22,0.72,rd,0,0.42,0.95);B(body,0.2,0.5,0.08,rd,0.3,0.15,1.32);}
+  return root;}
+function animDragon(d,t,now){const u=d.userData;
+  if(u.stage===0){u.egg.rotation.z=Math.sin(t*3)*0.12;u.wings.forEach(w=>{w.rotation.z=w.userData.side*Math.sin(t*(RM?3:9))*0.5;});
+    if(u.wiggleUntil>now)u.body.rotation.z=Math.sin(now/40)*0.25;else u.body.rotation.z=0;return;}
+  const sp=RM?2.5:6;u.wings.forEach(w=>{w.rotation.z=w.userData.side*Math.sin(t*sp)*0.55;});
+  u.tail.forEach((s,i)=>{s.rotation.y=Math.sin(t*2.6-i*0.7)*0.22;s.rotation.x=Math.sin(t*1.7-i*0.5)*0.08;});
+  if(u.jaw)u.jaw.rotation.x=(u.chompUntil>now)?(Math.sin(now/45)>0?0.5:0.05):0.06;
+  u.bubbles.forEach((b,i)=>{const k=((t*0.5)+i/3)%1;b.position.set(Math.sin(t+i)*0.2,0.1+k*1.4,1.0+k*0.3);b.scale.setScalar(0.6+k*0.9);});
+  let roll=0;if(u.stage===1)roll=Math.sin(t*2.2)*0.22;if(u.wiggleUntil>now)roll+=Math.sin(now/40)*(RM?0.1:0.25);u.body.rotation.z=roll;
+  if(u.stage===3&&u.allowFlip&&!RM){const ph=t%7;u.body.rotation.x=ph<1?-ph*Math.PI*2:0;}else u.body.rotation.x=0;}
+function mkTurtle(b,col,ud){const sh=M(col),dk=M(shade(col,0.6)),sk=M(0xa5d66f),wh=M(0xffffff),bk=M(0x111111),og=M(0xff8c1a);
+  B(b,1.5,0.5,1.7,sh,0,-0.2,0);B(b,1.1,0.35,1.3,dk,0,0.22,0);B(b,0.6,0.15,0.7,sh,0,0.45,0);B(b,1.6,0.12,1.8,M(0xe8d9a8),0,-0.48,0);
+  const h=G(b,0,0.02,1.05);B(h,0.6,0.5,0.6,sk);B(h,0.66,0.1,0.64,og,0,0.2,0);
+  [-1,1].forEach(s=>{B(h,0.16,0.18,0.05,wh,s*0.16,0.06,0.31);B(h,0.08,0.1,0.04,bk,s*0.16,0.05,0.34);});
+  [[-0.6,0.6],[0.6,0.6],[-0.6,-0.6],[0.6,-0.6]].forEach((a,i)=>{if(i===1){const arm=G(b,a[0],-0.45,a[1]);B(arm,0.35,0.5,0.35,sk,0,-0.2,0);ud.arm=arm;}else B(b,0.35,0.5,0.35,sk,a[0],-0.65,a[1]);});
+  B(b,0.2,0.2,0.4,sk,0,-0.4,-1.0);}
+function mkChicken(b,col,ud){const y=M(col),lt=M(tint(col,0.4)),r=M(0xe53935),o=M(0xff9800),wh=M(0xffffff),bk=M(0x111111),hp=M(0x222222);
+  B(b,1.0,0.95,1.1,y,0,-0.05,0);B(b,0.8,0.5,0.4,lt,0,-0.2,0.5);
+  const h=G(b,0,0.75,0.25);B(h,0.7,0.65,0.65,y);B(h,0.3,0.18,0.3,o,0,-0.05,0.45);B(h,0.14,0.22,0.08,r,0,-0.25,0.38);B(h,0.12,0.28,0.4,r,0,0.42,0);B(h,0.12,0.2,0.2,r,0,0.38,0.25);
+  [-1,1].forEach(s=>{B(h,0.06,0.16,0.16,wh,s*0.33,0.1,0.18);B(h,0.04,0.09,0.09,bk,s*0.36,0.1,0.2);B(h,0.14,0.3,0.3,hp,s*0.41,0.02,-0.08);});
+  B(h,0.92,0.08,0.14,hp,0,0.38,-0.08);
+  const wl=G(b,-0.55,0.15,0);B(wl,0.12,0.6,0.7,lt,0,-0.2,0);const wr=G(b,0.55,0.15,0);B(wr,0.12,0.6,0.7,lt,0,-0.2,0);ud.arm=wr;
+  B(b,0.5,0.5,0.25,lt,0,0.35,-0.6);
+  [-1,1].forEach(s=>{B(b,0.1,0.35,0.1,o,s*0.25,-0.7,0.05);B(b,0.25,0.06,0.3,o,s*0.25,-0.88,0.12);});}
+function mkElephant(b,col,ud){const g=M(col),dk=M(shade(col,0.75)),pk=M(0xf4a7b9),wh=M(0xffffff),bk=M(0x111111);
+  B(b,1.2,0.95,1.3,g,0,-0.05,-0.1);
+  [[-0.4,0.35],[0.4,0.35],[-0.4,-0.5],[0.4,-0.5]].forEach(a=>B(b,0.35,0.45,0.35,dk,a[0],-0.65,a[1]));
+  const h=G(b,0,0.55,0.6);B(h,0.85,0.8,0.7,g);
+  [-1,1].forEach(s=>{const ear=B(h,0.12,0.75,0.65,g,s*0.55,0.02,-0.05);ear.rotation.y=s*0.4;const inr=B(h,0.06,0.5,0.4,pk,s*0.6,0.02,0.02);inr.rotation.y=s*0.4;
+    B(h,0.12,0.14,0.05,wh,s*0.2,0.15,0.36);B(h,0.06,0.08,0.04,bk,s*0.2,0.14,0.39);B(h,0.08,0.08,0.26,wh,s*0.22,-0.3,0.42);});
+  const tr=G(h,0,-0.15,0.38);let p=tr;for(let i=0;i<3;i++){const s=G(p,0,i?-0.22:0,i?0.05:0);B(s,0.26-i*0.04,0.26,0.24,g,0,-0.1,0.05);p=s;}ud.arm=tr;ud.armAxis='x';
+  B(b,0.08,0.4,0.08,dk,0,0,-0.8);}
+function mkCritter(b,col,ud){const c=M(col),wh=M(0xffffff),bk=M(0x111111);B(b,1.1,1.1,1.0,c);
+  [-1,1].forEach(s=>{B(b,0.25,0.35,0.15,c,s*0.35,0.7,0);B(b,0.2,0.2,0.05,wh,s*0.22,0.2,0.51);B(b,0.1,0.12,0.04,bk,s*0.22,0.2,0.54);});
+  const arm=G(b,0.6,0,0);B(arm,0.2,0.5,0.2,c,0.05,-0.2,0);ud.arm=arm;[-1,1].forEach(s=>B(b,0.3,0.3,0.3,c,s*0.3,-0.68,0));}
+function buildFriend(f){const g=new THREE.Group(),b=G(g);const ud={body:b,arm:null,armAxis:'z',baseSize:1.6};g.userData=ud;
+  const a=(f&&f.animal)||'',col=(f&&f.color)||'#88aa88';
+  if(a.includes('เต่า'))mkTurtle(b,col,ud);else if(a.includes('ไก่'))mkChicken(b,col,ud);else if(a.includes('ช้าง'))mkElephant(b,col,ud);else mkCritter(b,col,ud);
+  return g;}
+function animFriend(o,t,wave){const u=o.userData;if(u.arm){if(u.armAxis==='x')u.arm.rotation.x=wave?-0.4-Math.abs(Math.sin(t*4))*0.7:0;else u.arm.rotation.z=wave?Math.sin(t*7)*0.7:0;}
+  u.body.position.y=wave&&!RM?Math.abs(Math.sin(t*3.5))*0.12:0;
+  if(u.glow&&u.glow.visible)u.glow.material.opacity=0.45+0.3*Math.sin(t*3);}
+function buildFood(name){const g=new THREE.Group();name=name||'';
+  if(name.includes('ผักบุ้ง')){const st=M(0x8bc34a),lf=M(0x2e7d32);for(let i=0;i<5;i++){const x=(i-2)*0.09;B(g,0.07,0.7,0.07,st,x,0,0);const l=B(g,0.3,0.05,0.12,lf,x+0.08,0.3-i*0.05,0.03);l.rotation.z=0.5;}B(g,0.5,0.1,0.12,M(0xd32f2f),0,-0.15,0);}
+  else if(name.includes('ข้าวโพด')){B(g,0.32,0.7,0.32,M(0xf2c94c));const pc=M(0xfffbe8);for(let i=0;i<7;i++)B(g,0.16,0.16,0.16,pc,(Math.random()-.5)*0.4,0.42+Math.random()*0.18,(Math.random()-.5)*0.3);const hk=B(g,0.12,0.5,0.34,M(0x7cb342),0.2,-0.12,0);hk.rotation.z=-0.3;}
+  else if(name.includes('กล้วย')){const y=M(0xffe135);for(let k=0;k<3;k++){const bn=G(g,(k-1)*0.18,0,0);bn.rotation.z=(k-1)*0.25;B(bn,0.14,0.45,0.14,y);const tp=B(bn,0.12,0.25,0.12,y,0.06,0.3,0);tp.rotation.z=-0.4;}B(g,0.12,0.15,0.12,M(0x6d4c41),0,-0.3,0);}
+  else{B(g,0.45,0.45,0.45,M(0xe53935));B(g,0.06,0.15,0.06,M(0x6d4c41),0,0.3,0);}
+  return g;}
+function buildTempleMarker(){const g=new THREE.Group(),b=G(g);g.userData={body:b,baseSize:2.4};const gd=M(0xe8b730,{emissive:new THREE.Color(0x4a3000),emissiveIntensity:0.5}),rd=M(0xc0392b);
+  B(b,1.8,0.25,1.4,0xf5f0e6,0,-0.9,0);B(b,1.4,0.8,1.0,0xfff8ee,0,-0.38,0);B(b,0.35,0.55,0.06,0x8b4513,0,-0.48,0.53);
+  B(b,1.9,0.18,1.5,rd,0,0.1,0);B(b,1.5,0.25,1.2,gd,0,0.31,0);B(b,1.1,0.25,0.9,rd,0,0.53,0);B(b,0.7,0.25,0.6,gd,0,0.75,0);B(b,0.12,0.6,0.12,gd,0,1.15,0);
+  [-1,1].forEach(s=>{const c=B(b,0.1,0.3,0.1,gd,s*0.95,0.3,0.7);c.rotation.z=-s*0.5;});return g;}
+function buildGoldfish(glow){const g=new THREE.Group();const em=glow?{emissive:new THREE.Color(0xffa000),emissiveIntensity:0.55}:{};
+  const or=M(0xf59a23,em),lt=M(0xffcf6e,em),fin=M(0xffb347,Object.assign({transparent:true,opacity:0.88},em)),wh=M(0xffffff),bk=M(0x1a1a1a);
+  B(g,1.8,1.7,2.4,or);B(g,1.5,1.4,0.7,or,0,0.05,1.45);B(g,1.3,0.5,2.0,lt,0,-0.75,0.1);
+  for(let i=0;i<3;i++)[-1,1].forEach(s=>B(g,0.06,0.35,0.35,lt,s*0.92,0.3-i*0.12,0.6-i*0.6));
+  [-1,1].forEach(s=>{B(g,0.45,0.45,0.45,wh,s*0.85,0.45,1.45);B(g,0.12,0.22,0.22,bk,s*1.08,0.45,1.5);const pf=B(g,0.08,0.45,0.75,fin,s*0.95,-0.55,0.35);pf.rotation.z=s*0.6;});
+  B(g,0.55,0.22,0.2,M(0xd2552a),0,-0.15,1.85);B(g,0.12,0.9,1.5,fin,0,1.2,-0.15);
+  const tail=G(g,0,0,-1.25);const t1=B(tail,0.1,1.5,1.7,fin,0,0.6,-0.75);t1.rotation.x=0.55;const t2=B(tail,0.1,1.5,1.7,fin,0,-0.6,-0.75);t2.rotation.x=-0.55;
+  g.userData={tail};if(glow){const s=glowSprite(0xffc94d,9);g.add(s);}return g;}
+function buildClouds(n,R0,elMin,elMax){const g=new THREE.Group(),wh=M(0xffffff),sh=M(0xe3eef9);
+  for(let i=0;i<n;i++){const c=G(g);c.position.copy(dirVec(i*(360/n)+Math.random()*20,elMin+Math.random()*(elMax-elMin),R0));c.lookAt(0,c.position.y,0);const k=2+Math.random()*2;
+    B(c,k*2,k*0.8,k,wh);B(c,k*1.2,k*0.7,k*0.9,wh,k*0.5,k*0.5,0);B(c,k,k*0.6,k*0.8,sh,-k*0.7,k*0.3,0);}
+  return g;}
+function spawnHearts(sc,list,pos){const now=performance.now();for(let i=0;i<8;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.22,0.22),M(0xff5c8a,{transparent:true}));
+  m.position.copy(pos).add(new THREE.Vector3((Math.random()-.5)*1.2,Math.random()*0.8,(Math.random()-.5)*1.2));sc.add(m);
+  list.push({m,v:new THREE.Vector3((Math.random()-.5)*1.2,1.4+Math.random(),(Math.random()-.5)*1.2),t0:now});}}
+function updateFx(sc,list,now){for(let i=list.length-1;i>=0;i--){const f=list[i],k=(now-f.t0)/1200;
+  if(k>=1){sc.remove(f.m);disposeTree(f.m);list.splice(i,1);continue;}f.m.position.addScaledVector(f.v,0.016);f.m.material.opacity=1-k;f.m.rotation.y+=0.1;}}
+
+/* ================= PLAY (ส่องหามังกร) ================= */
+const P={open:false,t0:0,fx:[]};
+const SIMS={pos:null,acc:12,timer:null,head:0,pitch:15,at:0,paused:false};
+function getView(){
+  if(SIM&&SIMS.at&&(SIMS.at>=ORI.at||!ORI.has))return {head:SIMS.head,pitch:SIMS.pitch};
+  if(ORI.has){ORI.head=lerpAng(ORI.head,ORI.rh,0.22);ORI.pitch+=(ORI.rp-ORI.pitch)*0.22;return {head:ORI.head,pitch:ORI.pitch};}
+  return {head:SIM?SIMS.head:0,pitch:SIM?SIMS.pitch:15};}
+function oriSince(t){return (ORI.has&&ORI.at>t)||(SIM&&SIMS.at>t);}
+function openPlay(){if(P.open)return;const day=D();
+  if(!day.walk.active){toast('ยังไม่ได้เริ่มภารกิจ');return;}
+  if(isWanphra()){toast('วันพระ: เดินเงียบ ไม่มีช่วงส่อง');return;}
+  if(!$('#resume').hidden){toast('แตะ "เดินภารกิจต่อ" ก่อน');return;}
+  if(!canPeek()){toast('เปิดส่องได้หลังถึงจุดและมีอาหารรอป้อน');renderWalk();return;}
+  Object.assign(P,{open:true,t0:performance.now(),fed:null,fedMsg:'',tmpMsg:'',tmpUntil:0,anim:null,close:null,closeItem:null,sc:null,stream:null,lastUi:0,dragonOff:false,fx:[],
+    centered:false,dOff:Math.random()*80-40,fix0:freshFix()});
+  // ตั้งเพดาน 30 วินาทีก่อนอย่างอื่น — กล้อง/3D พังก็ยังปิดเองตามเวลา
+  P.timer=setTimeout(()=>closePlay('cap'),PLAY_CAP_MS);
+  P.tm1=setTimeout(()=>{if(P.open&&!oriSince(P.t0))dragonToCenter();},1000);
+  P.tm5=setTimeout(()=>{if(P.open&&P.dragonOff)dragonToCenter();},5000);
+  mbuf=[];sensorsOn();
+  const v=getView();P.h0=v.head;P.h0ok=SIM;   // มือถือจริง: ตั้งทิศเริ่มจากเหตุการณ์เข็มทิศแรกหลังเปิด (ค่าเก่าค้างจากตอนเดินไม่ใช้)
+  show('play');$('#s-play').classList.remove('sky');startCam();
+  if(getRenderer()){try{buildPlayScene();}catch(e){console.error(e);if(P.sc){try{disposeTree(P.sc);}catch(_){}}P.sc=null;try{if(R.domElement.parentNode)R.domElement.parentNode.removeChild(R.domElement);}catch(_){}}}
+  const quick=!!nearFeedItem();   // อยู่ที่จุดและมีอาหาร = ไม่ต้องส่องหา มังกรมากลางจอทันที
+  if(quick)dragonToCenter();
+  ensureAudio();sparkleSnd();speak(quick?'มังกรมาแล้ว! ป้อนเลย':'ส่องหามังกรบนฟ้า!');
+  if(!motOK&&!SIM)toast('ตรวจการเดินไม่ได้ — ผู้ใหญ่ช่วยดูให้ยืนนิ่งตอนส่อง',4500);
+  playUi(v);P.raf=requestAnimationFrame(playLoop);}
+function startCam(){const vid=$('#cam');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){camFail();return;}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(s=>{
+    if(!P.open){s.getTracks().forEach(t=>t.stop());return;}
+    P.stream=s;vid.srcObject=s;const pp=vid.play();if(pp&&pp.catch)pp.catch(()=>{});}).catch(()=>camFail());}
+function camFail(){if(!P.open)return;$('#s-play').classList.add('sky');if(P.sc&&!P.clouds){P.clouds=buildClouds(9,70,6,30);P.sc.add(P.clouds);}}
+function buildPlayScene(){const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(68,1,0.1,600);cam.rotation.order='YXZ';
+  sc.add(new THREE.HemisphereLight(0xffffff,0x8090a8,0.85));sc.add(cam);const dl=new THREE.DirectionalLight(0xffffff,0.7);dl.position.set(0.6,1,1);cam.add(dl);
+  P.sc=sc;P.cam=cam;$('#glw').appendChild(R.domElement);
+  const pr=ST.profile;P.dragon=buildDragon(pr.hatched?pr.color:'#e8b730',pr.hatched?pr.stage:0,decoList());P.dragon.scale.setScalar(0.85);sc.add(P.dragon);
+  P.dYaw=(P.h0+P.dOff+360)%360;P.dEl=25+Math.random()*10;P.dYawT=P.dYaw;P.dElT=P.dEl;P.dDist=12;
+  P.far=[];
+  pts().forEach(p=>{const o=buildFriend(p.friend);const gl=glowSprite(0xfff1a8,3.4);gl.visible=false;o.add(gl);o.userData.glow=gl;sc.add(o);const lab=makeLabel();sc.add(lab);
+    P.far.push({kind:'pt',p,name:p.friend.name,obj:o,lab,text:'',d:null});});
+  const tm=buildTempleMarker();sc.add(tm);const tl=makeLabel();sc.add(tl);P.far.push({kind:'temple',p:CFG.temple,name:CFG.temple.name||'วัด',obj:tm,lab:tl,text:'',d:null});
+  P.fish=buildGoldfish(isWanphra());P.fish.scale.setScalar(2.8);sc.add(P.fish);
+  if($('#s-play').classList.contains('sky')){P.clouds=buildClouds(9,70,6,30);sc.add(P.clouds);}
+  sizeTo($('#glw'),cam);updateFar();}
+function placeFar(F,b,d){const R0=50,sizeDeg=clamp(9-d/1000*2.5,3.5,9),el=3+clamp(d/1000*2.5,0,8),size=2*R0*Math.tan(toRad(sizeDeg)/2);
+  F.obj.position.copy(dirVec(b,el,R0));F.obj.scale.setScalar(size/(F.obj.userData.baseSize||1.6));F.obj.lookAt(0,F.obj.position.y,0);
+  const lh=2*R0*Math.tan(toRad(2.4)/2);F.lab.position.copy(F.obj.position);F.lab.position.y+=size*0.72+lh*0.7;F.lab.scale.set(lh*(F.lab.userData.aspect||4),lh,1);}
+function haveHeading(){return ORI.has||SIM;}
+function updateFar(){if(!P.open||!P.sc||!P.far)return;const f=lastFix,day=D(),np=nextPoint(),hd=haveHeading();
+  for(const F of P.far){
+    if(!f||!hd){F.obj.visible=false;F.lab.visible=false;continue;}   // ไม่มี GPS หรือไม่มีเข็มทิศ = ไม่วางเพื่อนผิดทิศ
+    const d=distM(f,F.p),b=bearingDeg(f,F.p);F.d=d;
+    const isPt=F.kind==='pt',visited=isPt&&day.checkins.some(c=>c.n===F.p.n),isNext=isPt&&!!np&&np.n===F.p.n;
+    const hide=isPt&&P.close&&P.closeItem&&P.closeItem.n===F.p.n;
+    F.obj.visible=!hide;F.lab.visible=!hide;F.isNext=isNext;
+    if(F.obj.userData.glow)F.obj.userData.glow.visible=isNext;
+    const text=(visited?'✓ ':'')+F.name+' · '+fmtDist(d);
+    if(text!==F.text||F.hl!==isNext){setLabel(F.lab,text,isNext);F.text=text;F.hl=isNext;}
+    if(F.vis!==visited){setOpacity(F.obj,visited?0.45:1);F.lab.material.opacity=visited?0.7:1;F.vis=visited;}
+    placeFar(F,b,d);}}
+function dragonToCenter(){if(!P.open)return;const v=getView();P.centered=true;P.dYawT=v.head;P.dElT=clamp(v.pitch,12,40);}
+function screenPos(o){if(!o||!P.cam)return null;const v=new THREE.Vector3();o.getWorldPosition(v);const c=v.clone().applyMatrix4(P.cam.matrixWorldInverse);if(c.z>=0)return null;
+  v.project(P.cam);return {x:(v.x+1)/2*innerWidth,y:(1-v.y)/2*innerHeight};}
+function updateArrow(){const a=$('#parrow');if(!P.dragon||!P.cam){a.style.display='none';return;}
+  P.cam.updateMatrixWorld();const p=P.dragon.position.clone().applyMatrix4(P.cam.matrixWorldInverse),v=P.dragon.position.clone().project(P.cam);
+  const behind=p.z>0,off=behind||Math.abs(v.x)>0.92||Math.abs(v.y)>0.92;P.dragonOff=off;
+  if(!off){a.style.display='none';return;}
+  let ang=Math.atan2(p.y,p.x);if(Math.abs(p.x)<1e-3&&Math.abs(p.y)<1e-3)ang=Math.PI/2;
+  const W=innerWidth,H=innerHeight,rx=W/2-40,ry=H/2-120,c=Math.cos(ang),s=Math.sin(ang);
+  const k=Math.min(rx/Math.max(Math.abs(c),1e-6),ry/Math.max(Math.abs(s),1e-6));
+  a.style.display='block';a.style.transform='translate('+(W/2+c*k)+'px,'+(H/2-s*k)+'px) rotate('+(-ang)+'rad)';}
+function buildClose(it){const g=buildFriend({animal:it.animal,color:it.color});const food=buildFood(it.food);food.position.set(0.95,0.85,0.6);g.add(food);g.userData.food=food;g.scale.setScalar(0.85);
+  P.sc.add(g);P.close=g;P.closeItem=it;}
+function removeClose(){if(!P.close)return;P.sc.remove(P.close);disposeTree(P.close);P.close=null;P.closeItem=null;}
+function noFeedMsg(){const np=nearestPending();
+  if(np)return (np.d!=null?'ป้อนได้เมื่ออยู่ใกล้จุด · จุดที่ '+np.it.n+' อีก ~'+fmtDist(np.d):'ป้อนได้เมื่ออยู่ใกล้จุด · รอสัญญาณ GPS')+' · ไม่ต้องย้อนกลับ เก็บไว้ป้อนที่วัด';
+  if(ST.profile.basket.length)return 'ป้อนได้เมื่ออยู่ใกล้จุด · อาหารในตะกร้ารอป้อนที่วัด';
+  const nx=nextPoint();if(nx){const d=lastFix?distM(lastFix,nx):null;return 'ป้อนได้เมื่ออยู่ใกล้จุด · ไปให้ถึงจุดที่ '+nx.n+' ก่อน'+(d!=null?' (อีก ~'+fmtDist(d)+')':'');}
+  return 'ป้อนได้เมื่ออยู่ใกล้จุด';}
+function tmpMsg(t,ms){P.tmpMsg=t;P.tmpUntil=performance.now()+(ms||3200);playUi(null);}
+function playUi(v){if(!P.open)return;
+  if(v)$('#pneedle').style.transform='rotate('+(-v.head)+'deg)';
+  const gl=[];if(!lastFix)gl.push('รอสัญญาณ GPS');
+  if(!haveHeading()){if(performance.now()-P.t0>700)gl.push('เข็มทิศยังไม่เปิด');}
+  else if(ORI.has&&ORI.cacc!=null&&(ORI.cacc<0||ORI.cacc>25))gl.push('เข็มทิศยังไม่แม่น — โบกเครื่องเป็นเลข 8');
+  $('#pgps').textContent=gl.join(' · ');
+  $('#pori').hidden=SIM||!(NEED_ORI_PERM&&!oriOK);
+  if(P.sc)updateArrow();else $('#parrow').style.display='none';
+  const it=P.fed?null:nearFeedItem();
+  if(P.sc&&!P.anim&&!P.fed){
+    if(it&&(!P.close||P.closeItem.id!==it.id)){removeClose();buildClose(it);updateFar();}
+    else if(!it&&P.close){removeClose();updateFar();}}
+  const fb=$('#pfeed');
+  if(it&&!P.fed){fb.style.display='flex';fb.textContent='ป้อน'+it.food+' 🐉';}else fb.style.display='none';
+  let msg;
+  if(P.tmpMsg&&performance.now()<P.tmpUntil)msg=P.tmpMsg;
+  else if(P.fed)msg=P.fedMsg;
+  else if(it)msg=it.name+'ถือ'+it.food+'มารอแล้ว! แตะ “ป้อน”';
+  else msg=noFeedMsg();
+  $('#pmsg').textContent=msg;}
+function playFeed(){if(!P.open||P.fed)return;const it=nearFeedItem();if(!it)return;if(!doFeed(it,'point'))return;
+  P.fed=it.n;const egg=!ST.profile.hatched;
+  P.fedMsg=egg?'ไข่มังกรอุ่นขึ้น! 💛 '+it.name+'สอน: '+it.teach:'อิ่มแล้ว! 💛 '+it.name+'สอนมังกร: '+it.teach;
+  const nx=nextPoint();if(nx)P.fedMsg+=' · หันหา'+nx.friend.name+' จุดถัดไป!';
+  clearTimeout(P.tmAfter);P.tmAfter=setTimeout(()=>closePlay('fed'),AFTER_FEED_MS);
+  if(P.sc){if(!P.close||P.closeItem.id!==it.id){removeClose();buildClose(it);}
+    const food=P.close.userData.food,from=new THREE.Vector3();food.getWorldPosition(from);P.sc.attach(food);P.anim={food,from,t0:performance.now()};}
+  else chompSnd();
+  speak(egg?'งั่ม งั่ม! ไข่มังกรได้'+it.food+'แล้ว '+it.name+'สอนว่า '+it.teach:'งั่ม งั่ม! อร่อยจัง '+it.name+'สอนมังกรว่า '+it.teach);
+  playUi(null);}
+function playTap(x,y){if(!P.open)return;
+  const near=(o,r)=>{if(!o||!o.visible)return false;const s=screenPos(o);return !!s&&Math.hypot(s.x-x,s.y-y)<=r;};
+  if(P.sc){
+    if(!P.fed&&nearFeedItem()&&(near(P.dragon,120)||near(P.close,95))){playFeed();return;}
+    let best=null,bd=1e9;for(const F of (P.far||[])){if(!F.obj.visible)continue;const s=screenPos(F.obj);if(!s)continue;const d=Math.hypot(s.x-x,s.y-y);if(d<85&&d<bd){bd=d;best=F;}}
+    if(best){farTap(best);return;}
+    if(near(P.dragon,120)){P.dragon.userData.wiggleUntil=performance.now()+800;if(!P.fed)tmpMsg('มังกรหิวแล้ว! อาหารอยู่กับเพื่อนที่จุดภารกิจนะ');}}}
+function farTap(F){const day=D();let text,say;
+  if(F.kind==='temple'){text='วัด · รังทองเมฆ · อีก ~'+fmtDist(F.d);say='รังทองเมฆอยู่ที่วัด อีกประมาณ '+sayDist(F.d);}
+  else{const n=F.p.n,visited=day.checkins.some(c=>c.n===n),pending=ST.profile.basket.some(b=>b.day===todayKey()&&b.n===n);
+    if(visited&&!pending){text=F.name+' · จุดที่ '+n+' ไปมาแล้ววันนี้ ✓';say='จุดที่ '+n+' ไปมาแล้ววันนี้';}
+    else if(visited){text='อาหารจากจุดที่ '+n+' เก็บไว้ป้อนที่วัดนะ';say='อาหารจากจุดที่ '+n+' เก็บไว้ป้อนที่วัดนะ';}
+    else{text='ต้องไปให้ถึงจุดที่ '+n+' ก่อน ถึงจะป้อนได้ · อีก ~'+fmtDist(F.d);say='ต้องไปให้ถึงจุดที่ '+n+' ก่อน ถึงจะป้อนได้ อีกประมาณ '+sayDist(F.d);}}
+  tmpMsg(text,3800);speak(say);}
+function playLoop(){if(!P.open)return;P.raf=requestAnimationFrame(playLoop);
+  const now=performance.now(),el=now-P.t0,t=el/1000;
+  if(el>=PLAY_CAP_MS){closePlay('cap');return;}
+  const v=getView();
+  if(!P.h0ok&&ORI.has){P.h0ok=true;P.h0=ORI.rh;   // เข็มทิศเหตุการณ์แรกหลังเปิด = ทิศที่เด็กหันอยู่จริง
+    if(P.sc){P.dYaw=P.dYawT=(P.h0+(P.centered?0:P.dOff)+360)%360;updateFar();}}
+  if(P.sc){P.cam.rotation.set(toRad(v.pitch),-toRad(v.head),0,'YXZ');
+    P.dYaw=lerpAng(P.dYaw,P.dYawT,0.06);P.dEl+=(P.dElT-P.dEl)*0.06;
+    const bob=Math.sin(t*1.4)*0.8,sway=RM?0:Math.sin(t*0.6)*3;
+    P.dragon.position.copy(dirVec(P.dYaw+sway,P.dEl+bob,P.dDist));P.dragon.lookAt(0,0,0);P.dragon.rotateY(0.55);animDragon(P.dragon,t,now);
+    if(P.close){P.close.position.copy(dirVec(P.dYaw+sway+9,P.dEl+bob-12,8));P.close.lookAt(0,0,0);P.close.rotateY(-0.35);animFriend(P.close,t,true);}
+    if(P.far)for(const F of P.far)if(F.kind==='pt'&&F.obj.visible)animFriend(F.obj,t,!!F.isNext);
+    const fy=P.h0+40+t*2.5;P.fish.position.copy(dirVec(fy,46,95));P.fish.lookAt(dirVec(fy+5,46,95));P.fish.userData.tail.rotation.y=Math.sin(t*2)*0.35;
+    if(P.anim){const k=Math.min(1,(now-P.anim.t0)/750),to=new THREE.Vector3();(P.dragon.userData.head||P.dragon).getWorldPosition(to);
+      P.anim.food.position.lerpVectors(P.anim.from,to,k);P.anim.food.position.y+=Math.sin(k*Math.PI)*0.8;P.anim.food.rotation.y+=0.2;
+      if(k>=1){P.sc.remove(P.anim.food);disposeTree(P.anim.food);P.anim=null;const u=P.dragon.userData;u.chompUntil=now+700;u.wiggleUntil=now+1600;chompSnd();spawnHearts(P.sc,P.fx,P.dragon.position);}}
+    updateFx(P.sc,P.fx,now);R.render(P.sc,P.cam);}
+  if(now-P.lastUi>200){P.lastUi=now;playUi(v);}}
+function closePlay(reason){if(!P.open)return;P.open=false;
+  cancelAnimationFrame(P.raf);clearTimeout(P.timer);clearTimeout(P.tm1);clearTimeout(P.tm5);clearTimeout(P.tmAfter);sensorsOff();
+  if(P.stream){try{P.stream.getTracks().forEach(t=>t.stop());}catch(e){}}
+  const vid=$('#cam');try{vid.pause();}catch(e){}vid.srcObject=null;
+  if(P.sc){disposeTree(P.sc);P.sc=null;}if(R){try{R.renderLists.dispose();}catch(e){}}
+  P.dragon=P.close=P.closeItem=P.far=P.fish=P.clouds=P.anim=P.cam=P.stream=null;P.fx=[];$('#parrow').style.display='none';
+  const secs=Math.min(30,Math.round((performance.now()-P.t0)/1000));
+  D().plays.push({at:isoLocal(),secs,fed:P.fed||null,reason});save();P.fix0=null;
+  if(wakeWanted&&!wakeLock&&document.visibilityState==='visible')requestWake();
+  show('walk');renderWalk();flashWalk(reason==='walk'?'เดินต่อแล้ว — กล้องปิดเอง':'เก็บกล้อง ไปต่อ!');}
+
+/* ================= TEMPLE (รังทองเมฆ) ================= */
+const T={on:false,fx:[]};
+function enterTemple(){ensureAudio();startGeo();const day=D();show('temple');
+  const lines=[];
+  if(isWanphra()&&!day.goldScale){day.goldScale=true;ST.profile.goldScales=(ST.profile.goldScales||0)+1;save();lines.push('งานเกล็ดทอง! ทองเมฆเรืองแสง ได้เกล็ดทองวันพระ');}
+  const up=checkGrowth();
+  startTemple3D();renderTemple();
+  if(up)setTimeout(revealStage,500);else if(lines.length)speak(lines[0]);
+  else speak(ST.profile.hatched?'ยินดีต้อนรับสู่รังทองเมฆ':'ไข่มังกรรออยู่ที่รังทองเมฆ');}
+function startTemple3D(){const wrap=$('#tview');wrap.classList.toggle('gold',isWanphra());const emo=wrap.querySelector('.emo');
+  if(!getRenderer()){emo.hidden=false;emo.textContent=ST.profile.hatched?'🐉':'🥚';return;}
+  emo.hidden=true;wrap.insertBefore(R.domElement,wrap.firstChild);
+  const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(42,1,0.1,400);cam.position.set(0,2.4,10.5);cam.lookAt(0,1.2,0);
+  sc.add(new THREE.HemisphereLight(0xffffff,0x9aa8c0,0.9));const dl=new THREE.DirectionalLight(0xffffff,0.7);dl.position.set(4,8,6);sc.add(dl);
+  const nest=G(sc,0,-1.05,0),cl=M(0xffffff),cl2=M(0xeef4ff),gd=M(0xe8b730);
+  B(nest,4.2,0.5,3.2,cl);B(nest,3.2,0.4,4.0,cl2,0,0.05,0);B(nest,2.6,0.25,2.6,gd,0,0.35,0);B(nest,2.2,0.3,2.2,M(0xfff4d0),0,0.4,0);
+  [[-2.4,0.1,0.6],[2.3,0.2,-0.4],[-1.8,0.3,-1.6],[1.9,0.0,1.4]].forEach(a=>B(nest,1.0,0.7,1.0,cl,a[0],a[1],a[2]));
+  const clouds=G(sc);[[-9,6,-14],[8,8,-16],[-4,9,-20],[11,4,-10],[-12,3,-8]].forEach(a=>{const c=G(clouds,a[0],a[1],a[2]);B(c,4,1.4,2,cl);B(c,2.4,1.2,1.8,cl,1,0.9,0);B(c,2,1,1.6,cl2,-1.4,0.5,0);});
+  const wp=isWanphra();const fish=buildGoldfish(wp);fish.scale.setScalar(0.95);sc.add(fish);
+  Object.assign(T,{on:true,sc,cam,fish,t0:performance.now(),rotY:0.45,fx:[],dragon:null,anim:null,bounceUntil:0});
+  setTempleDragon();sizeTo(wrap,cam);T.raf=requestAnimationFrame(templeLoop);}
+function setTempleDragon(){if(!T.on)return;if(T.dragon){T.sc.remove(T.dragon);disposeTree(T.dragon);}
+  const pr=ST.profile;const d=buildDragon(pr.hatched?pr.color:'#e8b730',pr.hatched?pr.stage:0,decoList());d.userData.allowFlip=true;d.position.set(0,0.7,0);T.sc.add(d);T.dragon=d;}
+function templeLoop(){if(!T.on)return;T.raf=requestAnimationFrame(templeLoop);
+  const now=performance.now(),t=(now-T.t0)/1000,d=T.dragon;
+  d.rotation.y=T.rotY+(RM?0:Math.sin(t*0.5)*0.15);d.position.y=0.75+Math.sin(t*1.5)*0.15;
+  const bs=T.bounceUntil>now?1+Math.sin((T.bounceUntil-now)/1200*Math.PI*4)*0.12:1;d.scale.setScalar(bs);
+  animDragon(d,t,now);
+  const a=t*0.22,fp=new THREE.Vector3(Math.cos(a)*9,5.6+Math.sin(t*0.7)*0.4,Math.sin(a)*9-10);T.fish.position.copy(fp);
+  T.fish.lookAt(new THREE.Vector3(Math.cos(a+0.1)*9,fp.y,Math.sin(a+0.1)*9-10));T.fish.userData.tail.rotation.y=Math.sin(t*2)*0.35;
+  if(T.anim){const k=Math.min(1,(now-T.anim.t0)/800),to=new THREE.Vector3();(d.userData.head||d).getWorldPosition(to);
+    T.anim.food.position.lerpVectors(T.anim.from,to,k);T.anim.food.position.y+=Math.sin(k*Math.PI)*1.2;T.anim.food.rotation.y+=0.2;
+    if(k>=1){T.sc.remove(T.anim.food);disposeTree(T.anim.food);T.anim=null;d.userData.chompUntil=now+700;d.userData.wiggleUntil=now+1500;chompSnd();spawnHearts(T.sc,T.fx,d.position);}}
+  updateFx(T.sc,T.fx,now);R.render(T.sc,T.cam);}
+function stopTemple3D(){if(!T.on)return;T.on=false;cancelAnimationFrame(T.raf);disposeTree(T.sc);T.sc=null;T.dragon=null;T.fish=null;T.anim=null;T.fx=[];if(R){try{R.renderLists.dispose();}catch(e){}}}
+function templeFeedAnim(item){if(!T.on)return;const f=buildFood(item.food);f.position.set(-4,3,2);f.scale.setScalar(1.4);T.sc.add(f);T.anim={food:f,from:f.position.clone(),t0:performance.now()};}
+function revealStage(){const pr=ST.profile,fl=$('#tflash');fl.style.opacity='1';setTimeout(()=>{fl.style.opacity='0';},180);
+  setTempleDragon();T.bounceUntil=performance.now()+1200;sparkleSnd();renderTemple();
+  const cap=$('#tcap');cap.textContent='ว้าว! '+STAGE_NAMES[pr.stage];setTimeout(()=>{cap.textContent='';},5000);
+  speak(pr.stage>=4&&todayKey()>=FINAL_DATE?'วันสุดท้ายของภารกิจ! '+pr.name+'กลายเป็นมังกรผู้พิทักษ์ซอยแล้ว':pr.name+'โตขึ้นแล้ว! ตอนนี้เป็น'+STAGE_NAMES[pr.stage]);}
+function renderTemple(){const pr=ST.profile;
+  $('#tname').textContent=pr.hatched?pr.name:'ไข่มังกร';
+  $('#tstage').textContent=pr.hatched?STAGE_NAMES[pr.stage]+' · กินไปแล้ว '+pr.meals+' มื้อ':'ไข่รอฟัก · เก็บพลังอาหารไว้ '+pr.meals+' มื้อ';
+  $('#thatch').hidden=pr.hatched;renderTempleLive();renderGold();renderBadges();drawMap();}
+function renderTempleLive(){if(cur!=='temple')return;const pr=ST.profile,day=D(),ok=atTemple(),td=templeDist();
+  $('#tlocTxt').innerHTML=ok?'<b style="color:var(--ok)">📍 อยู่ที่วัดแล้ว — ป้อนได้</b>':(td!=null?'ป้อนได้เมื่ออยู่ที่วัด · อีก ~'+fmtDist(td):'ป้อนได้เมื่ออยู่ที่วัด · '+geoErrText());
+  $('#lpAtTemple').hidden=ok;
+  const box=$('#tbasket');const items=pr.basket;
+  if(!items.length){setBasket(box,(day.checkins.length||day.fed.point.length||day.fed.temple.length)?'<div class="sleepy">😴 พอแล้ววันนี้ มังกรง่วงแล้ว</div>':'<p class="muted">ตะกร้าว่าง — ออกภารกิจไปรับอาหารจากเพื่อน ๆ นะ</p>');return;}
+  let h='';items.forEach(it=>{h+='<button class="fbtn" data-id="'+esc(it.id)+'"'+(ok&&pr.hatched?'':' disabled')+'><span class="em">'+foodEmoji(it.food)+'</span><span>ป้อน'+esc(it.food)+'<br><span class="muted" style="font-size:18px;font-weight:400">จาก'+esc(it.name)+(it.day!==todayKey()?' (ค้างจากวันก่อน)':'')+'</span></span></button>';});
+  if(!pr.hatched)h+='<p class="note">ฟักไข่ก่อน แล้วค่อยป้อนนะ</p>';else if(!ok)h+='<p class="note">อาหารไม่หาย รอป้อนที่วัด</p>';
+  setBasket(box,h);}
+let lastBasketHtml='';
+function setBasket(box,h){if(h!==lastBasketHtml||box.innerHTML===''){box.innerHTML=h;lastBasketHtml=h;}}
+function foodEmoji(f){f=f||'';return f.includes('ผักบุ้ง')?'🥬':f.includes('ข้าวโพด')?'🍿':f.includes('กล้วย')?'🍌':'🍎';}
+function templeFeed(id){const pr=ST.profile;const it=pr.basket.find(b=>b.id===id);if(!it)return;
+  if(!pr.hatched){toast('ฟักไข่ก่อนนะ');return;}if(!atTemple()){toast('ป้อนได้เมื่ออยู่ที่วัด');return;}
+  if(!doFeed(it,'temple'))return;templeFeedAnim(it);
+  speak('งั่ม! '+it.food+'จาก'+it.name+' อร่อยจัง');
+  const up=checkGrowth();renderTemple();
+  if(up)setTimeout(revealStage,1500);
+  else if(!pr.basket.length)setTimeout(()=>speak('พอแล้ววันนี้ มังกรง่วงแล้ว',true),1400);}
+function renderGold(){const g=$('#tgold');if(!isWanphra()){g.hidden=true;return;}g.hidden=false;
+  g.innerHTML='<h2>✨ งานเกล็ดทอง</h2><p>วันนี้วันพระ ทองเมฆเรืองแสง · ได้เกล็ดทองวันพระแล้ว</p><p class="muted">เกล็ดทองสะสม '+(ST.profile.goldScales||0)+' เกล็ด (ติดที่หางมังกร)</p>';}
+function renderBadges(){const day=D(),pr=ST.profile,box=$('#tbadges');box.innerHTML='';
+  BADGES.forEach(b=>{const given=day.badges.includes(b.id),n=pr.badgeCounts[b.id]||0;const el=document.createElement('button');el.className='lp'+(given?' given':'');
+    el.innerHTML=lpInner(b.icon+' '+esc(b.name),given?'ให้แล้ววันนี้ ✓ · รวม '+n+' (กดค้างเพื่อยกเลิก)':'กดค้างเพื่อให้ตรา · รวม '+n);makeLP(el,()=>toggleBadge(b.id));box.appendChild(el);});}
+function toggleBadge(id){const day=D(),pr=ST.profile,b=BADGES.find(x=>x.id===id);
+  if(day.badges.includes(id)){day.badges=day.badges.filter(x=>x!==id);pr.badgeCounts[id]=Math.max(0,(pr.badgeCounts[id]||0)-1);toast('ยกเลิกตรา '+b.name);}
+  else{day.badges.push(id);pr.badgeCounts[id]=(pr.badgeCounts[id]||0)+1;sparkleSnd();speak('ได้ตรา'+b.name+'! มังกรได้ของแต่งตัวใหม่');}
+  save();renderBadges();setTempleDragon();}
+function setupHatch(){const box=$('#hcolors');let sel=COLORS[0].hex;
+  COLORS.forEach((c,i)=>{const s=document.createElement('button');s.className='sw'+(i===0?' on':'');s.style.background=c.hex;s.setAttribute('aria-label',c.name);
+    s.onclick=()=>{sel=c.hex;box.querySelectorAll('.sw').forEach(x=>x.classList.remove('on'));s.classList.add('on');if(T.on&&T.dragon&&!ST.profile.hatched){T.dragon.userData.wiggleUntil=performance.now()+600;}};box.appendChild(s);});
+  $('#hstart').onclick=()=>{ensureAudio();$('#hstart').hidden=true;$('#hform').hidden=false;if(T.dragon)T.dragon.userData.wiggleUntil=performance.now()+2500;speak('ไข่กำลังจะฟัก! ตั้งชื่อแล้วเลือกสีให้มังกรนะ');};
+  $('#hgo').onclick=()=>{const pr=ST.profile;if(pr.hatched)return;const name=($('#hname').value||'').trim().slice(0,14)||'มังกรน้อย';
+    pr.hatched=true;pr.name=name;pr.color=sel;pr.stage=1;pr.lastStageUpDay=todayKey();if(todayKey()>=FINAL_DATE)pr.stage=4;save();
+    const fl=$('#tflash');fl.style.opacity='1';setTimeout(()=>{fl.style.opacity='0';},200);setTempleDragon();if(T.on)T.bounceUntil=performance.now()+1200;
+    sparkleSnd();renderTemple();speak('ไข่ฟักแล้ว! สวัสดี'+name);};}
+
+/* ---------- แผนที่นักสำรวจ ---------- */
+function drawMap(){const cv=$('#mapcv');if(!cv||cur!=='temple')return;const W=Math.max(260,cv.clientWidth||320),H=Math.round(W*0.8),dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.height=H+'px';const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
+  const tl=20;for(let y=0;y<H;y+=tl)for(let x=0;x<W;x+=tl){g.fillStyle=((x/tl+y/tl)%2)?'#7cc36a':'#73ba61';g.fillRect(x,y,tl,tl);}
+  const pr=ST.profile,day=D();
+  const nodes=[{n:0,kind:'temple',lat:CFG.temple.lat,lon:CFG.temple.lon,icon:'🛕',color:'#e8b730'}].concat(pts().map(p=>({n:p.n,kind:'pt',lat:p.lat,lon:p.lon,icon:ANIMAL_EMOJI[p.friend.animal]||'🐾',color:p.friend.color})));
+  const lat0=nodes.reduce((s,a)=>s+a.lat,0)/nodes.length,lon0=nodes.reduce((s,a)=>s+a.lon,0)/nodes.length,kx=Math.cos(toRad(lat0))*111320,ky=110540;
+  nodes.forEach(a=>{a.mx=(a.lon-lon0)*kx;a.my=(a.lat-lat0)*ky;});
+  const xs=nodes.map(a=>a.mx),ys=nodes.map(a=>a.my),minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+  const padd=46,s=Math.min((W-2*padd)/Math.max(1,maxx-minx),(H-2*padd)/Math.max(1,maxy-miny)),ox=(W-(maxx-minx)*s)/2,oy=(H-(maxy-miny)*s)/2;
+  nodes.forEach(a=>{a.x=ox+(a.mx-minx)*s;a.y=H-(oy+(a.my-miny)*s);});
+  const route=nodes.concat([nodes[0]]);g.lineWidth=3;g.strokeStyle='rgba(255,255,255,.9)';g.setLineDash([8,6]);
+  for(let i=0;i<route.length-1;i++){const a=route[i],b=route[i+1];g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();}
+  g.setLineDash([]);g.font='bold 16px '+CFONT;g.textAlign='center';g.textBaseline='middle';
+  for(let i=0;i<route.length-1;i++){const a=route[i],b=route[i+1],t=fmtDist(distM(a,b)),mx=(a.x+b.x)/2,my=(a.y+b.y)/2,w=g.measureText(t).width+14;
+    g.fillStyle='rgba(20,28,40,.85)';rrect(g,mx-w/2,my-12,w,24,10);g.fill();g.fillStyle='#fff';g.fillText(t,mx,my+1);}
+  nodes.forEach(a=>{const rev=a.kind==='temple'||pr.everVisited.includes(a.n),todayV=a.kind==='pt'&&day.checkins.some(c=>c.n===a.n),x=a.x-24,y=a.y-24;
+    g.fillStyle='rgba(0,0,0,.25)';g.fillRect(x+4,y+5,48,48);
+    g.fillStyle=rev?a.color:'#9aa3ad';g.fillRect(x,y,48,48);g.fillStyle='rgba(0,0,0,.18)';g.fillRect(x,y+40,48,8);g.fillStyle='rgba(255,255,255,.25)';g.fillRect(x,y,48,6);
+    if(rev){g.font='28px "Apple Color Emoji","Segoe UI Emoji",sans-serif';g.fillStyle='#000';g.fillText(a.icon,a.x,a.y+1);}
+    else{g.fillStyle='rgba(255,255,255,.85)';[[-14,-8,18],[4,-12,20],[-4,6,22],[12,6,14]].forEach(c=>g.fillRect(a.x+c[0]-c[2]/2,a.y+c[1]-c[2]/2,c[2],c[2]*0.8));
+      g.fillStyle='#55606c';g.font='bold 22px '+CFONT;g.fillText('?',a.x,a.y+2);}
+    const lab=a.kind==='temple'?'วัด':String(a.n);g.font='bold 14px '+CFONT;const lw=Math.max(20,g.measureText(lab).width+10);
+    g.fillStyle='#1b2236';rrect(g,x-6,y-8,lw,20,8);g.fill();g.fillStyle='#ffd76a';g.fillText(lab,x-6+lw/2,y+2);
+    if(todayV){g.fillStyle='#2fbf71';g.beginPath();g.arc(x+46,y+2,10,0,Math.PI*2);g.fill();g.fillStyle='#fff';g.font='bold 14px '+CFONT;g.fillText('✓',x+46,y+3);}});}
+
+/* ================= SUMMARY ================= */
+function summaryData(){const day=D();const ci=day.checkins.slice().sort((a,b)=>a.n-b.n);let mins=null,lastN=null;
+  if(day.walk.start&&ci.length){let last=-Infinity;ci.forEach(c=>{const t=new Date(c.time).getTime();if(t>=last){last=t;lastN=c.n;}});
+    mins=Math.max(0,Math.round((last-new Date(day.walk.start).getTime())/60000));}
+  const toLbl=lastN==null?'':(ci.length>=CFG.points.length?'จุดสุดท้าย (จุดที่ '+lastN+')':'จุดที่ '+lastN);
+  return {day,ci,mins,lastN,toLbl};}
+function methodTxt(m){return m==='auto'?'GPS อัตโนมัติ':'ผู้ใหญ่กดถึงแล้ว';}
+function summaryText(){const k=todayKey(),{day,mins,toLbl}=summaryData(),pr=ST.profile;const L=[];
+  L.push('🐉 สรุปภารกิจมังกรหิว');L.push(thaiDate(keyToDate(k))+(isWanphra(k)?' (วันพระ)':''));
+  L.push('เริ่มเดิน '+(day.walk.start?hm(day.walk.start)+' น.':'–'));
+  pts().forEach(p=>{const c=day.checkins.find(x=>x.n===p.n);L.push('จุดที่ '+p.n+' ('+p.friend.name+'): '+(c?hm(c.time)+' น. · '+methodTxt(c.method):'ยังไม่ถึง'));});
+  if(mins!=null)L.push('จากเริ่มเดินถึง'+toLbl+' '+mins+' นาที');
+  L.push('ป้อนมังกร: ที่จุด '+day.fed.point.length+' มื้อ · ที่วัด '+day.fed.temple.length+' มื้อ');
+  if(day.badges.length)L.push('ตราวันนี้: '+day.badges.map(id=>{const b=BADGES.find(x=>x.id===id);return b?b.icon+' '+b.name:id;}).join(' · '));
+  if(day.goldScale)L.push('✨ ได้เกล็ดทองวันพระ');
+  if(pr.hatched)L.push('มังกรของนักสำรวจ: '+pr.name+' · '+STAGE_NAMES[pr.stage]);
+  return L.join('\n');}
+function renderSummary(){const k=todayKey(),{day,mins,toLbl}=summaryData();$('#sumDate').textContent=thaiDate(keyToDate(k))+(isWanphra(k)?' · วันพระ':'');
+  let h='<div class="row"><span>เริ่มเดิน</span><b>'+(day.walk.start?hm(day.walk.start)+' น.':'–')+'</b></div>';
+  pts().forEach(p=>{const c=day.checkins.find(x=>x.n===p.n);h+='<div class="row"><span>จุดที่ '+p.n+' · '+esc(p.friend.name)+'</span><b>'+(c?hm(c.time)+' น.<br><span class="muted" style="font-weight:400">'+methodTxt(c.method)+(c.accuracy!=null?' ±'+c.accuracy+' ม.':'')+'</span>':'ยังไม่ถึง')+'</b></div>';});
+  h+='<div class="row"><span>เริ่มเดิน → '+(toLbl||'จุดสุดท้าย')+'</span><b>'+(mins!=null?mins+' นาที':'–')+'</b></div>';
+  h+='<div class="row"><span>ป้อนที่จุด / ที่วัด</span><b>'+day.fed.point.length+' / '+day.fed.temple.length+' มื้อ</b></div>';
+  h+='<div class="row"><span>ช่วงส่อง</span><b>'+day.plays.length+' ครั้ง</b></div>';
+  h+='<div class="row"><span>อาหารค้างในตะกร้า</span><b>'+ST.profile.basket.length+'</b></div>';
+  $('#sumBody').innerHTML=h;$('#sumText').textContent=summaryText();}
+function summaryJSON(){const k=todayKey(),day=D(),pr=ST.profile;
+  return JSON.stringify({date:k,wanphra:isWanphra(k),walk:day.walk,checkins:day.checkins,fed:day.fed,plays:day.plays,badges:day.badges,goldScale:day.goldScale,
+    dragon:{hatched:pr.hatched,name:pr.name,stage:pr.stage,stageName:STAGE_NAMES[pr.stage],meals:pr.meals},basket:pr.basket.map(b=>({n:b.n,day:b.day,food:b.food}))},null,2);}
+function copyText(t){const done=()=>toast('คัดลอกแล้ว');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done).catch(()=>{if(fallbackCopy(t))done();});}else if(fallbackCopy(t))done();}
+function fallbackCopy(t){const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.top='0';ta.style.opacity='0';document.body.appendChild(ta);
+  ta.select();try{ta.setSelectionRange(0,t.length);}catch(e){}let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();if(!ok)toast('คัดลอกไม่ได้ — กดค้างที่ข้อความเพื่อคัดลอกเอง',4000);return ok;}
+
+/* ================= SETTINGS ================= */
+function srcName(s){return s==='hash'?'จากลิงก์':s==='local'?'ปักเอง':'ค่าเริ่มต้น';}
+function renderSettings(){let h='';
+  pts().forEach(p=>{h+='<div class="srow"><b>จุด '+p.n+' · '+esc(p.friend.name)+'</b><br><span class="muted">'+p.lat.toFixed(6)+', '+p.lon.toFixed(6)+' · รัศมี '+p.radius+' ม. · '+srcName(p.src)+(p.acc!=null?' ±'+Math.round(p.acc)+' ม.':'')+'</span><button class="btn alt" data-pin="'+p.n+'">📍 ปักจุดตรงนี้ (จุด '+p.n+')</button></div>';});
+  const t=CFG.temple;h+='<div class="srow"><b>'+esc(t.name||'วัด')+' (รังทองเมฆ)</b><br><span class="muted">'+t.lat.toFixed(6)+', '+t.lon.toFixed(6)+' · รัศมี '+t.radius+' ม. · '+srcName(t.src)+(t.acc!=null?' ±'+Math.round(t.acc)+' ม.':'')+'</span><button class="btn alt" data-pin="temple">📍 ปักจุดตรงนี้ (วัด)</button></div>';
+  $('#setPts').innerHTML=h;renderSettingsLive();}
+function renderSettingsLive(){if(cur!=='settings')return;const f=lastFix;
+  $('#setFix').textContent=(f?f.lat.toFixed(6)+', '+f.lon.toFixed(6)+' · ±'+Math.round(f.acc)+' ม. · '+Math.round((Date.now()-f.t)/1000)+' วินาทีก่อน':geoErrText())+(coarseN>=2?' — '+COARSE_MSG:'');}
+function pinHere(which){const f=lastFix;if(!f||Date.now()-f.t>30000){toast('ยังไม่มีค่า GPS ล่าสุด รอสักครู่');return;}
+  const label=which==='temple'?'วัด':'จุดที่ '+which;
+  if(!confirm('บันทึกตำแหน่งนี้เป็น'+label+'?\nความแม่น ±'+Math.round(f.acc)+' ม.'+(f.acc>ACC_MAX?'\n(คลาดเกิน '+ACC_MAX+' ม. — แนะนำให้รอก่อน)':'')))return;
+  const ov=lsGet(LS_CFG)||{points:[],temple:null};ov.points=Array.isArray(ov.points)?ov.points:[];const rec={lat:+f.lat.toFixed(7),lon:+f.lon.toFixed(7),acc:Math.round(f.acc),at:isoLocal(),src:'local'};
+  if(which==='temple')ov.temple=Object.assign({},ov.temple||{},rec);
+  else{const old=ov.points.find(q=>Number(q.n)===which)||{};ov.points=ov.points.filter(q=>Number(q.n)!==which);ov.points.push(Object.assign({},old,rec,{n:which}));}
+  if(!lsSet(LS_CFG,ov))toast('บันทึกในเครื่องไม่ได้ (โหมดส่วนตัว?) — ใช้ได้จนปิดหน้า');
+  CFG=buildCfg();if(which!=='temple'){const p=pt(which);if(p){p.lat=rec.lat;p.lon=rec.lon;p.src='local';p.acc=rec.acc;}}else{Object.assign(CFG.temple,{lat:rec.lat,lon:rec.lon,src:'local',acc:rec.acc});}
+  renderSettings();toast('ปัก'+label+'แล้ว');}
+function cfgLink(){const o={points:pts().map(p=>({n:p.n,lat:+p.lat.toFixed(6),lon:+p.lon.toFixed(6),radius:p.radius})),temple:{lat:+CFG.temple.lat.toFixed(6),lon:+CFG.temple.lon.toFixed(6),radius:CFG.temple.radius,name:CFG.temple.name}};
+  return location.href.split('#')[0]+'#cfg='+b64urlEnc(JSON.stringify(o));}
+
+/* ================= SIM (?sim=1) ================= */
+function simStart(){if(SIMS.timer)return;SIMS.timer=setInterval(simEmit,1500);}
+function simEmit(){if(!SIMS.pos||SIMS.paused)return;const m=Math.min(SIMS.acc,10)/2,j=()=>(Math.random()-0.5)*2*m/111000;onPos(SIMS.pos.lat+j(),SIMS.pos.lon+j(),SIMS.acc);simInfo();}
+function simGo(p){SIMS.pos={lat:p.lat,lon:p.lon};simStart();simEmit();}
+function simInfo(){const el=document.getElementById('simInfo');if(!el)return;const n=nextPoint();
+  el.textContent=(SIMS.pos?SIMS.pos.lat.toFixed(5)+','+SIMS.pos.lon.toFixed(5):'ยังไม่มีตำแหน่ง')+' ±'+SIMS.acc+' · head '+Math.round(SIMS.head)+'° pitch '+Math.round(SIMS.pitch)+'° · next '+(n?n.n:'-');}
+function buildSimPanel(){const d=document.createElement('div');d.id='sim';
+  d.innerHTML='<b>SIM</b> <button id="simHideBtn">ย่อ</button><div id="simBody"><div><button data-s="t">ไปวัด</button><button data-s="1">ไปจุด 1</button><button data-s="2">ไปจุด 2</button><button data-s="3">ไปจุด 3</button><button data-s="away">ห่างออกไป</button></div>'+
+  '<div>ความแม่น <span id="simAccV">12</span> ม.<input id="simAcc" type="range" min="3" max="120" value="12"></div><div><button data-s="pause">หยุดส่ง/ส่งต่อ</button><button data-s="walk">จำลองเดิน</button></div><div id="simInfo"></div><div style="opacity:.7">ลากบนจอส่อง = หมุนทิศ / เงย</div></div>';
+  document.body.appendChild(d);
+  d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const s=b.dataset.s;
+    if(b.id==='simHideBtn'){const bd=$('#simBody');bd.hidden=!bd.hidden;return;}
+    if(s==='t')simGo(CFG.temple);else if(s==='1'||s==='2'||s==='3'){const p=pt(+s);if(p)simGo(p);}
+    else if(s==='away'){const base=SIMS.pos||CFG.temple;simGo({lat:base.lat+0.0025,lon:base.lon+0.0025});}
+    else if(s==='pause'){SIMS.paused=!SIMS.paused;toast(SIMS.paused?'SIM หยุดส่งตำแหน่ง':'SIM ส่งตำแหน่งต่อ');}
+    else if(s==='walk'){if(P.open)closePlay('walk');else toast('ยังไม่ได้เปิดช่วงส่อง');}
+    simInfo();});
+  $('#simAcc').addEventListener('input',e=>{SIMS.acc=+e.target.value;$('#simAccV').textContent=SIMS.acc;simInfo();});
+  simInfo();}
+
+/* ================= wiring ================= */
+function wire(){
+  $('#startBtn').onclick=beginWalk;
+  // กดค้างแค่ "เปิดปุ่ม" — การเริ่มจริงต้องเป็นการแตะ (iOS ขอสิทธิ์/เสียงได้เฉพาะในจังหวะแตะ)
+  makeLP($('#startAnyway'),()=>{restArmed=true;renderStart();toast('ผู้ใหญ่แตะ “เริ่มภารกิจ” เพื่อเดิน',3500);});
+  makeLP($('#wpToggle'),()=>{const day=D();if(day.walk.active){toast('เปลี่ยนวันพระระหว่างเดินไม่ได้');return;}
+    day.wanphraManual=day.wanphraManual==null?true:(day.wanphraManual?false:null);save();renderStart();});
+  $('#voiceTest').onclick=()=>{ensureAudio();pickVoice();chime();setTimeout(()=>speak('สวัสดีนักสำรวจ ทองเมฆเอง ได้ยินเสียงไหม',true),300);};
+  $('#toTemple').onclick=enterTemple;
+  $('#toSummary').onclick=()=>{renderSummary();show('summary');};
+  makeLP($('#toSettings'),()=>{startGeo();show('settings');renderSettings();},2500);
+  $('#resume').onclick=()=>{startGesture(true);$('#resume').hidden=true;renderWalk();};
+  makeLP($('#lpArrive'),manualArrive);
+  makeLP($('#lpPeek'),openPlay,2500);
+  makeLP($('#lpEnd'),()=>{if(confirm('จบภารกิจวันนี้ แล้วไปหน้าสรุป?'))endWalk();});
+  $('#phide').onclick=()=>closePlay('hide');
+  $('#pori').onclick=e=>{e.stopPropagation();askSensors();};
+  $('#pfeed').onclick=e=>{e.stopPropagation();playFeed();};
+  const glw=$('#glw');let pd=null;
+  glw.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,moved:false};});
+  glw.addEventListener('pointermove',e=>{if(!pd)return;const dx=e.clientX-pd.lx,dy=e.clientY-pd.ly;pd.lx=e.clientX;pd.ly=e.clientY;
+    if(Math.hypot(e.clientX-pd.x,e.clientY-pd.y)>8)pd.moved=true;
+    if(SIM&&pd.moved){SIMS.head=(SIMS.head-dx*0.25+720)%360;SIMS.pitch=clamp(SIMS.pitch+dy*0.2,-80,85);SIMS.at=performance.now();simInfo();}});
+  glw.addEventListener('pointerup',e=>{if(pd&&!pd.moved)playTap(e.clientX,e.clientY);pd=null;});
+  glw.addEventListener('pointercancel',()=>{pd=null;});
+  setupHatch();
+  makeLP($('#lpAtTemple'),()=>{D().templeOkUntil=Date.now()+TEMPLE_OK_MS;save();renderTempleLive();speak('มาถึงรังทองเมฆแล้ว');});
+  $('#tbasket').addEventListener('click',e=>{const b=e.target.closest('.fbtn');if(b&&!b.disabled)templeFeed(b.dataset.id);});
+  const tv=$('#tview');let td=null;
+  tv.addEventListener('pointerdown',e=>{td=e.clientX;});tv.addEventListener('pointermove',e=>{if(td==null||!T.on)return;T.rotY+=(e.clientX-td)*0.012;td=e.clientX;});
+  tv.addEventListener('pointerup',()=>{td=null;});tv.addEventListener('pointercancel',()=>{td=null;});
+  $('#tsum').onclick=()=>{renderSummary();show('summary');};
+  $('#thome').onclick=()=>{show('start');renderStart();};
+  $('#copyText').onclick=()=>copyText(summaryText());
+  $('#copyJson').onclick=()=>copyText(summaryJSON());
+  $('#sumTemple').onclick=enterTemple;
+  $('#sumHome').onclick=()=>{show('start');renderStart();};
+  $('#setPts').addEventListener('click',e=>{const b=e.target.closest('[data-pin]');if(!b)return;const v=b.dataset.pin;pinHere(v==='temple'?'temple':+v);});
+  $('#setLink').onclick=()=>copyText(cfgLink());
+  $('#setReset').onclick=()=>{if(!confirm('ลบจุดที่ปักไว้ทั้งหมด กลับไปใช้ค่าเริ่มต้น?'))return;lsDel(LS_CFG);CFG=buildCfg();renderSettings();toast('กลับค่าเริ่มต้นแล้ว');};
+  makeLP($('#lpWipe'),()=>{if(!confirm('ล้างข้อมูลเกมทั้งหมดในเครื่องนี้? (มังกร ตะกร้า บันทึก)'))return;lsDel(LS_STATE);ST=loadState();toast('ล้างข้อมูลแล้ว');});
+  $('#setBack').onclick=()=>{show('start');renderStart();};
+  window.addEventListener('resize',()=>{if(P.open&&P.cam)sizeTo($('#glw'),P.cam);if(T.on)sizeTo($('#tview'),T.cam);if(cur==='temple')drawMap();});
+  setInterval(()=>{if(cur==='walk')renderWalk();if(cur==='settings')renderSettingsLive();},5000);}
+
+/* ต้องเป็นหน้า https ชั้นบนสุดในแท็บ Safari — ใน iframe / http / ไลน์ ใช้ GPS กล้อง เข็มทิศ กันจอดับ ไม่ได้ครบ */
+function envCheck(){let bad=false;try{bad=!window.isSecureContext||window.top!==window.self||/\bLine\//i.test(navigator.userAgent||'');}catch(e){bad=true;}
+  $('#envWarn').hidden=!bad;}
+function boot(){readHashCfg();CFG=buildCfg();wire();if(SIM)buildSimPanel();envCheck();
+  const day=D();
+  if(day.walk.active){show('walk');$('#resume').hidden=false;startGeo();requestWake(true);renderWalk();}
+  else{show('start');renderStart();}
+  if(toastLater)toast(toastLater,3500);}
+boot();
+</script>
+</body>
+</html>
